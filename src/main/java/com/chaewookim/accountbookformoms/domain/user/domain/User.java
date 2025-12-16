@@ -2,7 +2,6 @@ package com.chaewookim.accountbookformoms.domain.user.domain;
 
 import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
 import com.chaewookim.accountbookformoms.global.entity.BaseEntity;
-import jakarta.persistence.Access;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,12 +13,17 @@ import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE user SET deleted_at = NOW() WHERE id = ?")
+@SQLRestriction("deleted_at IS NULL")
 public class User extends BaseEntity {
 
     @Id
@@ -47,6 +51,9 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String address;
+
+    @Column
+    private LocalDateTime deletedAt;
 
     @Builder
     public User(String username, String email, String password, LocalDate birthDate, String address) {

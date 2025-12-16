@@ -1,9 +1,11 @@
 package com.chaewookim.accountbookformoms.domain.user.application;
 
+import com.chaewookim.accountbookformoms.domain.user.dao.RefreshTokenRepository;
 import com.chaewookim.accountbookformoms.domain.user.dao.UserRepository;
 import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.SignUpRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
+import com.chaewookim.accountbookformoms.domain.user.dto.request.WithdrawRequest;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
 import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import jakarta.validation.Valid;
@@ -20,6 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     public Long signUp(SignUpRequest request) {
@@ -55,5 +58,25 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND))
                 .updateUser(request)
                 .getId();
+    }
+
+    @Transactional
+    public void deleteUser(UserDetails userDetails, @Valid WithdrawRequest request) {
+
+        // 현재 로그인된 유저 찾기
+        String email = userDetails.getUsername();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 비밀번호 검증
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+        }
+
+        // 리프레시 토큰 정리
+        refreshTokenRepository.deleteByUserId(user.getId());
+
+        // 삭제 진행
+        userRepository.delete(user);
     }
 }

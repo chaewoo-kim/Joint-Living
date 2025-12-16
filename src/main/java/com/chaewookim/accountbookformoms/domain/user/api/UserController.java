@@ -65,6 +65,8 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
 
+        userService.deleteUser(userDetails, request);
+
         return ResponseEntity.ok(ApiResponse.success("회원 탈퇴가 완료되었습니다."));
     }
 }
