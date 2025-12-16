@@ -3,6 +3,7 @@ package com.chaewookim.accountbookformoms.domain.user.dto.request;
 import com.chaewookim.accountbookformoms.domain.user.domain.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -17,7 +18,7 @@ public record SignUpRequest(
         @NotBlank(message = "비밀번호는 필수 입력값입니다.")
         String password,
 
-        @NotBlank(message = "생년월일은 필수 입력값입니다.")
+        @NotNull(message = "생년월일은 필수 입력값입니다.")
         LocalDate birthDate,
 
         UserRole role,
