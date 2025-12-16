@@ -4,6 +4,7 @@ import com.chaewookim.accountbookformoms.domain.user.dao.RefreshTokenRepository;
 import com.chaewookim.accountbookformoms.domain.user.dao.UserRepository;
 import com.chaewookim.accountbookformoms.domain.user.domain.RefreshToken;
 import com.chaewookim.accountbookformoms.domain.user.domain.User;
+import com.chaewookim.accountbookformoms.domain.user.dto.request.LogoutRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.TokenReissueRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.response.TokenResponse;
@@ -24,6 +25,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
@@ -118,6 +121,52 @@ class AuthServiceTest {
         CustomException exception = assertThrows(CustomException.class, () -> authService.reissue(request));
 
         // 예외 상세 검증
+        assertEquals(ErrorCode.INVALID_REFRESH_TOKEN, exception.getErrorCode());
+    }
+
+
+    @Test
+    @DisplayName("로그아웃 성공 테스트")
+    void logout_Success() {
+
+        // given
+        // 요청 객체
+        String requestToken = "token";
+        LogoutRequest request = new LogoutRequest(requestToken);
+
+        // 사용자 객체
+        User user = User.forTestBuilder()
+                .id(1L)
+                .username("username")
+                .email("email")
+                .password("password")
+                .isAdmin(false)
+                .address("address")
+                .build();
+        ReflectionTestUtils.setField(user, "id", 1L);
+
+        // 토큰 true 반환
+        given(jwtTokenProvider.validateToken(requestToken)).willReturn(true);
+
+        // when
+        authService.logout(request);
+
+        // then
+        verify(refreshTokenRepository, times(1)).deleteByToken(requestToken);
+    }
+
+    @Test
+    @DisplayName("로그아웃 실패 테스트 - 유효하지 않은 토큰")
+    void logout_Failure_invalidToken() {
+
+        // given
+        String invalidToken = "invalidToken";
+
+        // validate 반환값을 false로 설정
+        given(jwtTokenProvider.validateToken(invalidToken)).willReturn(false);
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () -> authService.logout(new LogoutRequest(invalidToken)));
         assertEquals(ErrorCode.INVALID_REFRESH_TOKEN, exception.getErrorCode());
     }
 }

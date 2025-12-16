@@ -5,6 +5,7 @@ import com.chaewookim.accountbookformoms.domain.user.dao.UserRepository;
 import com.chaewookim.accountbookformoms.domain.user.domain.RefreshToken;
 import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.LoginRequest;
+import com.chaewookim.accountbookformoms.domain.user.dto.request.LogoutRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.TokenReissueRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.response.LoginResponse;
 import com.chaewookim.accountbookformoms.domain.user.dto.response.TokenResponse;
@@ -66,6 +67,7 @@ public class AuthService {
         return new LoginResponse(accessToken, refreshToken, user.getUsername());
     }
 
+    @Transactional
     public TokenResponse reissue(@Valid TokenReissueRequest request) {
 
         // refresh token 자체를 검증
@@ -109,5 +111,17 @@ public class AuthService {
 
         return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND))
                 .getId();
+    }
+
+    @Transactional
+    public Void logout(LogoutRequest request) {
+
+        if (!jwtTokenProvider.validateToken(request.refreshToken())) {
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        refreshTokenRepository.deleteByToken(request.refreshToken());
+
+        return null;
     }
 }
