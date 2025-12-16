@@ -4,6 +4,7 @@ import com.chaewookim.accountbookformoms.domain.user.domain.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,24 +41,28 @@ public class JwtTokenProvider {
     }
 
     // 1. Access Token 생성
-    public String createAccessToken(String email, UserRole role) {
+    public String createAccessToken(Authentication authentication) {
         long now = (new Date()).getTime();
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
         return Jwts.builder()
-                .setSubject(email)                 // payload "sub": "email@naver.com"
-                .claim(AUTHORITIES_KEY, role.getKey()) // payload "auth": "ROLE_USER"
+                .setSubject(authentication.getName())                 // payload "sub": "email@naver.com"
+                .claim(AUTHORITIES_KEY, authorities) // payload "auth": "ROLE_USER"
                 .setExpiration(accessTokenExpiresIn) // payload "exp": 1234567890 (유효기간)
                 .signWith(key, SignatureAlgorithm.HS256) // header "alg": "HS256"
                 .compact();
     }
 
-    public String createRefreshToken(String email) {
+    public String createRefreshToken(Authentication authentication) {
         long now = (new Date()).getTime();
         Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
         return Jwts.builder()
-                .setSubject(email) // ⭐️ 핵심: 이 토큰의 주인은 이 사람이다!
+                .setSubject(authentication.getName()) // ⭐️ 핵심: 이 토큰의 주인은 이 사람이다!
                 .setExpiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -112,5 +117,9 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    public String getSubject(String token) {
+        return parseClaims(token).getSubject();
     }
 }

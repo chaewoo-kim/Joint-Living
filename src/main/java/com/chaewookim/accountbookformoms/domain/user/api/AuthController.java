@@ -4,6 +4,7 @@ import com.chaewookim.accountbookformoms.domain.user.application.AuthService;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.LoginRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.TokenReissueRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.response.LoginResponse;
+import com.chaewookim.accountbookformoms.domain.user.dto.response.TokenResponse;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,9 +39,9 @@ public class AuthController {
     }
 
     @Operation(summary = "토큰 재발급", description = "RefreshToken을 이용해 AccessToken 재발급")
-    @PostMapping("/refresh")
-    public ResponseEntity<ApiResponse<TokenReissueRequest>> refreshToken(@RequestBody @Valid TokenReissueRequest request) {
+    @PostMapping("/reissue")
+    public ResponseEntity<ApiResponse<TokenResponse>> refreshToken(@RequestBody @Valid TokenReissueRequest request) {
 
-        return null;
+        return ResponseEntity.ok(ApiResponse.success(authService.reissue(request)));
     }
 }
