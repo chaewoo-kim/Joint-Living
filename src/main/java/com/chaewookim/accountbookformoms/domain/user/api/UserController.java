@@ -50,9 +50,12 @@ public class UserController {
 
     @Operation(summary = "정보 수정", description = "회원의 정보 수정")
     @PatchMapping("/update")
-    public ResponseEntity<ApiResponse<Long>> update(@RequestBody @Valid UpdateRequest request) {
+    public ResponseEntity<ApiResponse<Long>> update(
+            @RequestBody @Valid UpdateRequest request,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
 
-        return ResponseEntity.ok(ApiResponse.success(1L)); // 이후 변경한 pk로 수정
+        return ResponseEntity.ok(ApiResponse.success(userService.updateUser(userDetails.getUsername(), request)));
     }
 
     @Operation(summary = "회원 탈퇴", description = "비밀번호 확인 후 회원 탈퇴(Soft Delete) 처리")

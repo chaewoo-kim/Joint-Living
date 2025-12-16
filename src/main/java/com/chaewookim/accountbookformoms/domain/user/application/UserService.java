@@ -3,9 +3,12 @@ package com.chaewookim.accountbookformoms.domain.user.application;
 import com.chaewookim.accountbookformoms.domain.user.dao.UserRepository;
 import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.SignUpRequest;
+import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
 import com.chaewookim.accountbookformoms.global.error.ErrorCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,5 +47,13 @@ public class UserService {
     public User getUserByEmail(String username) {
 
         return userRepository.findByEmail(username).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    @Transactional
+    public Long updateUser(String email, @Valid UpdateRequest request) {
+
+        return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND))
+                .updateUser(request)
+                .getId();
     }
 }

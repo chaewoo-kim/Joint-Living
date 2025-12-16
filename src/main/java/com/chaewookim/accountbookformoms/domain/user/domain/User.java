@@ -1,5 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.user.domain;
 
+import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
 import com.chaewookim.accountbookformoms.global.entity.BaseEntity;
 import jakarta.persistence.Access;
 import jakarta.persistence.Column;
@@ -9,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,6 +54,25 @@ public class User extends BaseEntity {
         this.email = email;
         this.password = password;
         this.birthDate = birthDate;
+        this.address = address;
+    }
+
+    public User updateUser(@Valid UpdateRequest request) {
+
+        this.username = request.username();
+        this.email = request.email();
+        this.address = request.address();
+
+        return this;
+    }
+
+    @Builder(builderMethodName = "forTestBuilder")
+    public User(Long id, String username, String email, String password, boolean isAdmin, String address) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
         this.address = address;
     }
 }
