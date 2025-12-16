@@ -62,7 +62,9 @@ public class SecurityConfig {
                         ).permitAll()
 
                         .requestMatchers(
-                                HttpMethod.GET, "/api/v1/users/me"
+                                HttpMethod.GET,
+                                "/api/v1/users/me",
+                                "/api/v1/auth/logout"
                         ).authenticated()
 
                         // 그 외 모든 요청은 인증 필요

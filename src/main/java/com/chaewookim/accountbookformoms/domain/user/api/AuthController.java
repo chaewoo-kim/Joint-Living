@@ -2,6 +2,7 @@ package com.chaewookim.accountbookformoms.domain.user.api;
 
 import com.chaewookim.accountbookformoms.domain.user.application.AuthService;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.LoginRequest;
+import com.chaewookim.accountbookformoms.domain.user.dto.request.LogoutRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.TokenReissueRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.response.LoginResponse;
 import com.chaewookim.accountbookformoms.domain.user.dto.response.TokenResponse;
@@ -33,9 +34,11 @@ public class AuthController {
 
     @Operation(summary = "로그아웃", description = "로그아웃 진행")
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout() {
+    public ResponseEntity<ApiResponse<String>> logout(@RequestBody @Valid LogoutRequest request) {
 
-        return null;
+        authService.logout(request);
+
+        return ResponseEntity.ok(ApiResponse.success("로그아웃 성공"));
     }
 
     @Operation(summary = "토큰 재발급", description = "RefreshToken을 이용해 AccessToken 재발급")
