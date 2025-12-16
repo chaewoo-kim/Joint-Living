@@ -53,9 +53,12 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
 
-                        // 로그인, 회원가입 API 허용
+                        // 로그인, 회원가입, 토큰 재발급 API 허용
                         .requestMatchers(
-                                HttpMethod.POST, "/api/v1/auth/login", "/api/v1/users/signup"
+                                HttpMethod.POST,
+                                "/api/v1/auth/login",
+                                "/api/v1/users/signup",
+                                "/api/v1/auth/reissue"
                         ).permitAll()
 
                         .requestMatchers(

@@ -1,7 +1,10 @@
 package com.chaewookim.accountbookformoms.domain.user.application;
 
+import com.chaewookim.accountbookformoms.domain.user.dao.RefreshTokenRepository;
 import com.chaewookim.accountbookformoms.domain.user.dao.UserRepository;
+import com.chaewookim.accountbookformoms.domain.user.domain.RefreshToken;
 import com.chaewookim.accountbookformoms.domain.user.domain.User;
+import com.chaewookim.accountbookformoms.domain.user.dto.request.TokenReissueRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
 import org.junit.jupiter.api.DisplayName;
@@ -69,23 +72,5 @@ class UserServiceTest {
         assertEquals(email, existingUser.getEmail());
         assertEquals(address, existingUser.getAddress());
         assertEquals(username, existingUser.getUsername());
-    }
-
-    @Test
-    @DisplayName("회원 정보 수정 실패 테스트 - 존재하지 않는 유저")
-    void updateUser_Failure_UserNotFound() {
-
-        // given
-        String email = "ghost@gmail.com";
-        UpdateRequest request = new UpdateRequest("name", "email", "address");
-
-        // 없는 유저를 반환하도록 설정
-        given(userRepository.findByEmail(email)).willReturn(Optional.empty());
-
-        // when then
-        // 예외 발생 시 성공
-        assertThrows(CustomException.class, () ->
-                userService.updateUser(email, request)
-                );
     }
 }

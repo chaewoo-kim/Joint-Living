@@ -36,4 +36,15 @@ public class RefreshToken extends BaseEntity {
         this.userId = userId;
         this.expireTime = expireTime;
     }
+
+    public void updateToken(String newRefreshToken) {
+
+        this.token = newRefreshToken;
+    }
+
+    @Builder(builderMethodName = "forTestBuilder")
+    public RefreshToken(String token, Long userId) {
+        this.token = token;
+        this.userId = userId;
+    }
 }
