@@ -1,7 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.user.api;
 
 import com.chaewookim.accountbookformoms.domain.user.application.UserService;
-import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.SignUpRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.WithdrawRequest;
@@ -65,7 +64,7 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
 
-        userService.deleteUser(userDetails, request);
+        userService.withdrawUser(userDetails, request);
 
         return ResponseEntity.ok(ApiResponse.success("회원 탈퇴가 완료되었습니다."));
     }

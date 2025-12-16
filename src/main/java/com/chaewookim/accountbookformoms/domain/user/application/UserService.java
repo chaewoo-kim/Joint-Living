@@ -11,7 +11,6 @@ import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +60,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(UserDetails userDetails, @Valid WithdrawRequest request) {
+    public void withdrawUser(UserDetails userDetails, @Valid WithdrawRequest request) {
 
         // 현재 로그인된 유저 찾기
         String email = userDetails.getUsername();
