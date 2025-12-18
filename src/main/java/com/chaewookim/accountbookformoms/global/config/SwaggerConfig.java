@@ -5,6 +5,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,22 +13,18 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .components(new Components()
-                        .addSecuritySchemes("bearer-key",
-                                new SecurityScheme()
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")))
-                .addSecurityItem(new SecurityRequirement().addList("bearer-key"))
-                .info(apiInfo());
+    public GroupedOpenApi accountGroup() {
+        return GroupedOpenApi.builder()
+                .group("Account API")
+                .pathsToMatch("/api/v1/account/**")
+                .build();
     }
 
-    private Info apiInfo() {
-        return new Info()
-                .title("주부를 위한 가계부 API 명세서")
-                .description("Spring Boot + JWT + Swagger로 만든 가계부 API입니다.")
-                .version("1.0.0");
+    @Bean
+    public GroupedOpenApi allGroup() {
+        return GroupedOpenApi.builder()
+                .group("전체 API")
+                .pathsToMatch("/**")
+                .build();
     }
 }
