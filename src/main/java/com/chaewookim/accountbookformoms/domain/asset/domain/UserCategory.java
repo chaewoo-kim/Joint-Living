@@ -32,7 +32,7 @@ public class UserCategory extends BaseEntity {
     private boolean isInterested = false;
 
     @Column(nullable = false)
-    private boolean isIncome;   // income or expense
+    private boolean isIncome = false;   // income or expense
 
     @Builder
     public UserCategory(Long userId, String categoryName, boolean isInterested, boolean isIncome) {
