@@ -39,6 +39,6 @@ out/
 ### MAC OS ###
 .DS_Store
 
-### Spring Boot & Security ###
-src/main/resources/application.yml
+### JWT Secret Key ###
+src/main/resources/application-secret.yml
 
