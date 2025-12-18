@@ -1,6 +1,7 @@
 package com.chaewookim.accountbookformoms.domain.asset.domain;
 
 
+import com.chaewookim.accountbookformoms.global.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,15 +21,15 @@ import java.math.BigDecimal;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-public class Asset {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class Asset extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Bank bank;
+    private BankEnum bank;
 
     @Column(nullable = false)
     private String accountNumber;
@@ -41,10 +42,16 @@ public class Asset {
     private Long userId;
 
     @Builder
-    public Asset(Bank bank, String accountNumber, BigDecimal balance, Long userId) {
+    public Asset(BankEnum bank, String accountNumber, BigDecimal balance, Long userId) {
         this.bank = bank;
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.userId = userId;
+    }
+
+    public Asset updateBalance(BigDecimal newBalance) {
+        this.balance = newBalance;
+
+        return this;
     }
 }
