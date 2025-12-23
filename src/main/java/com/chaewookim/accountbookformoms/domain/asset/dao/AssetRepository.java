@@ -13,4 +13,6 @@ public interface AssetRepository extends JpaRepository<Asset, Long> {
     Optional<Asset> findByAccountNumber(String accountNumber);
 
     List<Asset> findAllByUsername(String username);
+
+    Optional<Asset> findByIdAndUsername(Long id, String username);
 }

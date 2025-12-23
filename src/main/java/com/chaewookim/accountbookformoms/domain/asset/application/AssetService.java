@@ -45,8 +45,12 @@ public class AssetService {
         assetRepository.deleteByAccountNumber(accountNumber);
     }
 
-    public AccountResponse updateAccount(AccountRequest request) {
-
-        return null;
+    @Transactional(rollbackFor = CustomException.class)
+    public AccountResponse updateAccount(String username, AccountUpdateRequest request) {
+        return AccountResponse.from(
+                assetRepository.findByIdAndUsername(request.id(), username)
+                        .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_ACCESS_DENIED))
+                        .updateBalance(request.balance())
+        );
     }
 }
