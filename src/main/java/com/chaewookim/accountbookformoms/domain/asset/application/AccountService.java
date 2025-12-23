@@ -18,7 +18,7 @@ public class AccountService {
     public AccountResponse registAccount(String username, AccountRequest request) {
         Asset asset = AccountRequest.toEntity(request);
 
-        return AccountResponse.from(assetRepository.save(asset));
+        return AccountResponse.from(assetRepository.save(asset.updateUsername(username)));
     }
 
     public void deleteAccount(String id) {

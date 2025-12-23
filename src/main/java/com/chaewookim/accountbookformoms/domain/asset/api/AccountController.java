@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,12 +38,12 @@ public class AccountController {
     }
 
     @Operation(summary = "계좌 삭제", description = "등록된 사용자의 계좌를 삭제한다.")
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{accountnumber}")
     public ResponseEntity<ApiResponse<String>> deleteAccount(
-            @PathVariable String id,
+            @PathVariable String accountnumber,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        accountService.deleteAccount(id);
+        accountService.deleteAccount(accountnumber);
 
         return ResponseEntity.ok(ApiResponse.success("계좌 삭제 완료"));
     }

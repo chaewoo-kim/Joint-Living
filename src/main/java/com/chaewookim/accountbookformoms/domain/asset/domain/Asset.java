@@ -54,4 +54,10 @@ public class Asset extends BaseEntity {
 
         return this;
     }
+
+    public Asset updateUsername(String username) {
+        this.username = username;
+
+        return this;
+    }
 }

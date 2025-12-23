@@ -5,6 +5,7 @@ import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
 import com.chaewookim.accountbookformoms.domain.asset.domain.BankEnum;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
+import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ class AccountServiceTest {
     private String username;
     private Asset asset;
     private AccountRequest accountRequest;
+    private CustomUserDetails userDetails;
 
     @BeforeEach
     void setUp() {
