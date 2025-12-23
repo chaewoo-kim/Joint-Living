@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,6 +39,7 @@ class AssetServiceTest {
     private String accountNumber;
     private Asset asset;
     private AccountRequest accountRequest;
+    private List<Asset> assetList;
 
     @BeforeEach
     void setUp() {
@@ -58,6 +60,29 @@ class AssetServiceTest {
                 accountNumber,
                 BigDecimal.valueOf(1000000),
                 username
+        );
+
+        assetList = List.of(
+                Asset.builder()
+                        .username(username)
+                        .balance(BigDecimal.valueOf(1000000))
+                        .bank(BankEnum.KB)
+                        .build(),
+                Asset.builder()
+                        .username(username)
+                        .balance(BigDecimal.valueOf(1000000))
+                        .bank(BankEnum.KB)
+                        .build(),
+                Asset.builder()
+                        .username(username)
+                        .balance(BigDecimal.valueOf(1000000))
+                        .bank(BankEnum.KB)
+                        .build(),
+                Asset.builder()
+                        .username(username)
+                        .balance(BigDecimal.valueOf(1000000))
+                        .bank(BankEnum.KB)
+                        .build()
         );
     }
 
@@ -108,5 +133,19 @@ class AssetServiceTest {
         assertEquals(ErrorCode.ACCOUNT_ACCESS_DENIED, exception.getErrorCode());
         verify(assetRepository, times(1)).findByAccountNumber(accountNumber);
         verify(assetRepository, never()).deleteByAccountNumber(accountNumber);
+    }
+
+
+    @Test
+    @DisplayName("계좌 전체 조회")
+    void selectAllAccounts() {
+        // given
+        given(assetRepository.findAllByUsername(username)).willReturn(assetList);
+
+        // when
+        List<AccountResponse> responses = assetService.getAllAccounts(username);
+
+        // then
+        assertNotNull(responses);
     }
 }
