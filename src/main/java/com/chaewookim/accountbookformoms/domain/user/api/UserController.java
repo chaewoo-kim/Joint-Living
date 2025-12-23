@@ -1,6 +1,7 @@
 package com.chaewookim.accountbookformoms.domain.user.api;
 
 import com.chaewookim.accountbookformoms.domain.user.application.UserService;
+import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.SignUpRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.WithdrawRequest;
@@ -12,7 +13,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,11 +39,11 @@ public class UserController {
     @Operation(summary = "내 정보 조회", description = "로그인한 사용자의 정보 조회")
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getMyInfo(
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 
         return ResponseEntity.ok(ApiResponse.success(UserResponse
-                .from(userService.getUserByEmail(userDetails.getUsername()))));
+                .from(userService.getUserByUsername(userDetails.getUsername()))));
     }
 
 
@@ -51,7 +51,7 @@ public class UserController {
     @PatchMapping("/update")
     public ResponseEntity<ApiResponse<Long>> update(
             @RequestBody @Valid UpdateRequest request,
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 
         return ResponseEntity.ok(ApiResponse.success(userService.updateUser(userDetails.getUsername(), request)));
@@ -61,7 +61,7 @@ public class UserController {
     @DeleteMapping("/withdraw")
     public ResponseEntity<ApiResponse<String>> withdraw(
             @RequestBody @Valid WithdrawRequest request,
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
 
         userService.withdrawUser(userDetails, request);

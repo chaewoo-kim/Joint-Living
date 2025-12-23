@@ -17,13 +17,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class AssetTest {
 
     private Asset asset;
+    private String username;
 
     @BeforeEach
     void setUp() {
+        username = "username";
+
         asset = Asset.builder()
                 .bank(BankEnum.KB)
                 .accountNumber("123")
-                .userId(1L)
+                .username(username)
                 .build();
         ReflectionTestUtils.setField(asset, "id", 1L);
     }

@@ -33,7 +33,13 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "리프레시 토큰이 존재하지 않습니다."),
 
     // 비밀번호 불일치
-    PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+    PASSWORD_NOT_MATCH(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
+
+    // 계좌 존재하지 않음
+    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 계좌가 존재하지 않습니다."),
+
+    // 접근 권한 부족
+    ACCOUNT_ACCESS_DENIED(HttpStatus.UNAUTHORIZED, "본인의 계좌만 삭제할 수 있습니다.");
 
     private final HttpStatus status;
     private final String message;

@@ -39,18 +39,24 @@ public class Asset extends BaseEntity {
     private BigDecimal balance = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    private Long userId;
+    private String username;
 
     @Builder
-    public Asset(BankEnum bank, String accountNumber, BigDecimal balance, Long userId) {
+    public Asset(BankEnum bank, String accountNumber, BigDecimal balance, String username) {
         this.bank = bank;
         this.accountNumber = accountNumber;
         this.balance = balance;
-        this.userId = userId;
+        this.username = username;
     }
 
     public Asset updateBalance(BigDecimal newBalance) {
         this.balance = newBalance;
+
+        return this;
+    }
+
+    public Asset updateUsername(String username) {
+        this.username = username;
 
         return this;
     }
