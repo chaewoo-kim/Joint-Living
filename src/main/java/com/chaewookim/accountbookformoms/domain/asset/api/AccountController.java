@@ -38,12 +38,14 @@ public class AccountController {
     }
 
     @Operation(summary = "계좌 삭제", description = "등록된 사용자의 계좌를 삭제한다.")
-    @DeleteMapping("/delete/{accountnumber}")
+    @DeleteMapping("/delete/{account-number}")
     public ResponseEntity<ApiResponse<String>> deleteAccount(
-            @PathVariable String accountnumber,
+            @PathVariable("account-number") String accountNumber,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        accountService.deleteAccount(accountnumber);
+        String username = userDetails.getUsername();
+
+        accountService.deleteAccount(username, accountNumber);
 
         return ResponseEntity.ok(ApiResponse.success("계좌 삭제 완료"));
     }

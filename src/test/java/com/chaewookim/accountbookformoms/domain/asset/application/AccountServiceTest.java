@@ -6,6 +6,8 @@ import com.chaewookim.accountbookformoms.domain.asset.domain.BankEnum;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
+import com.chaewookim.accountbookformoms.global.error.CustomException;
+import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -32,15 +36,16 @@ class AccountServiceTest {
     private AssetRepository assetRepository;
 
     private String username;
+    private String accountNumber;
     private Asset asset;
     private AccountRequest accountRequest;
-    private CustomUserDetails userDetails;
 
     @BeforeEach
     void setUp() {
         Long userId = 1L;
         Long assetId = 10L;
         username = "username";
+        accountNumber = "111112222222";
 
         asset = Asset.builder()
                 .username(username)
@@ -51,7 +56,7 @@ class AccountServiceTest {
 
         accountRequest = new AccountRequest(
                 BankEnum.KB,
-                "3333111133333",
+                accountNumber,
                 BigDecimal.valueOf(1000000),
                 username
         );
@@ -70,5 +75,39 @@ class AccountServiceTest {
         assertNotNull(response);
 
         verify(assetRepository, times(1)).save(any(Asset.class));
+    }
+
+
+    @Test
+    @DisplayName("계좌 삭제 - 성공")
+    void deleteAccount() {
+        // given
+        given(assetRepository.findByAccountNumber(accountNumber)).willReturn(Optional.of(asset));
+
+        // when
+        accountService.deleteAccount(username, accountNumber);
+
+        // then
+        verify(assetRepository, times(1)).findByAccountNumber(accountNumber);
+        verify(assetRepository, times(1)).deleteByAccountNumber(accountNumber);
+    }
+    @Test
+    @DisplayName("계좌 삭제 - 사용자 불일치로 실패")
+    void deleteAccount_AccessDenied() {
+        // given
+        String unAuthUser = "unAuthUser";
+
+        given(assetRepository.findByAccountNumber(accountNumber)).willReturn(Optional.of(asset));
+
+        // when
+        CustomException exception = assertThrows(
+                CustomException.class,
+                () -> accountService.deleteAccount(unAuthUser, accountNumber)
+        );
+
+        // then
+        assertEquals(ErrorCode.ACCOUNT_ACCESS_DENIED, exception.getErrorCode());
+        verify(assetRepository, times(1)).findByAccountNumber(accountNumber);
+        verify(assetRepository, never()).deleteByAccountNumber(accountNumber);
     }
 }

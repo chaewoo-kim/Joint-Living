@@ -5,6 +5,7 @@ import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
+import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +22,16 @@ public class AccountService {
         return AccountResponse.from(assetRepository.save(asset.updateUsername(username)));
     }
 
-    public void deleteAccount(String id) {
+    @Transactional(rollbackFor = CustomException.class)
+    public void deleteAccount(String username, String accountNumber) {
+        Asset asset = assetRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
+        if (!username.equals(asset.getUsername())) {
+            throw new CustomException(ErrorCode.ACCOUNT_ACCESS_DENIED);
+        }
 
+        assetRepository.deleteByAccountNumber(accountNumber);
     }
 
     public AccountResponse updateAccount(AccountRequest request) {
