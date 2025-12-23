@@ -64,7 +64,11 @@ public class AssetController {
 
     @Operation(summary = "계좌 잔고 수정", description = "사용자의 계좌 잔고를 수정한다.")
     @GetMapping("/update")
-    public ResponseEntity<ApiResponse<AccountResponse>> updateAccount(@RequestBody AccountRequest request) {
+    public ResponseEntity<ApiResponse<AccountResponse>> updateAccount(
+            @RequestBody AccountRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        String username = userDetails.getUsername();
 
         return ResponseEntity.ok(ApiResponse.success(assetService.updateAccount(request)));
     }
