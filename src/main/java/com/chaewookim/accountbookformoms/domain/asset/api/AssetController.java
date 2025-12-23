@@ -2,6 +2,7 @@ package com.chaewookim.accountbookformoms.domain.asset.api;
 
 import com.chaewookim.accountbookformoms.domain.asset.application.AssetService;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountRequest;
+import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountUpdateRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
