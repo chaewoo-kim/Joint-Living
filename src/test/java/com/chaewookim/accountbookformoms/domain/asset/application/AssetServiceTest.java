@@ -4,6 +4,7 @@ import com.chaewookim.accountbookformoms.domain.asset.dao.AssetRepository;
 import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
 import com.chaewookim.accountbookformoms.domain.asset.domain.BankEnum;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountRequest;
+import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountUpdateRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
 import com.chaewookim.accountbookformoms.global.error.ErrorCode;
@@ -59,7 +60,8 @@ class AssetServiceTest {
                 BankEnum.KB,
                 accountNumber,
                 BigDecimal.valueOf(1000000),
-                username
+                username,
+                assetId
         );
 
         assetList = List.of(
@@ -147,5 +149,29 @@ class AssetServiceTest {
 
         // then
         assertNotNull(responses);
+    }
+
+
+    @Test
+    @DisplayName("계좌 잔액 수정")
+    void updateAccount() {
+        // given
+        AccountUpdateRequest request = new AccountUpdateRequest(
+                BigDecimal.valueOf(10000),
+                username,
+                10L
+        );
+
+        given(assetRepository.findByIdAndUsername(any(), any())).willReturn(Optional.of(asset));
+
+        // when
+        AccountResponse response = assetService.updateAccount(username, request);
+
+        // then
+        assertNotNull(response);
+
+        assertEquals(10000, response.balance().intValue());
+
+        verify(assetRepository, times(1)).findByIdAndUsername(any(), any());
     }
 }
