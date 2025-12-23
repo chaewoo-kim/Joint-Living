@@ -46,15 +46,15 @@ public class UserService {
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)).getId();
     }
 
-    public User getUserByEmail(String username) {
+    public User getUserByUsername(String username) {
 
-        return userRepository.findByEmail(username).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findByUsername(username).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Transactional
-    public Long updateUser(String email, @Valid UpdateRequest request) {
+    public Long updateUser(String username, @Valid UpdateRequest request) {
 
-        return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND))
+        return userRepository.findByUsername(username).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND))
                 .updateUser(request)
                 .getId();
     }
@@ -63,8 +63,8 @@ public class UserService {
     public void withdrawUser(UserDetails userDetails, @Valid WithdrawRequest request) {
 
         // 현재 로그인된 유저 찾기
-        String email = userDetails.getUsername();
-        User user = userRepository.findByEmail(email)
+        String username = userDetails.getUsername();
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 비밀번호 검증

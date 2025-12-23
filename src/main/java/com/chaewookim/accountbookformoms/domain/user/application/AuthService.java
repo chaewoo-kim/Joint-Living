@@ -40,7 +40,7 @@ public class AuthService {
     @Transactional
     public LoginResponse login(LoginRequest request) {
 
-        User user = userRepository.findByEmail(request.email())
+        User user = userRepository.findByUsername(request.username())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if (!encoder.matches(request.password(), user.getPassword())) {
@@ -48,7 +48,7 @@ public class AuthService {
         }
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().getKey()))
         );

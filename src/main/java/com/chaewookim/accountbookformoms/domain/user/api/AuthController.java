@@ -25,7 +25,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인하고 토큰 발급")
+    @Operation(summary = "로그인", description = "username과 비밀번호로 로그인하고 토큰 발급")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody @Valid LoginRequest request) {
 

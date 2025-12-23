@@ -51,7 +51,7 @@ public class JwtTokenProvider {
                 .collect(Collectors.joining(","));
 
         return Jwts.builder()
-                .setSubject(authentication.getName())                 // payload "sub": "email@naver.com"
+                .setSubject(authentication.getName())                 // payload "sub": "username"
                 .claim(AUTHORITIES_KEY, authorities) // payload "auth": "ROLE_USER"
                 .setExpiration(accessTokenExpiresIn) // payload "exp": 1234567890 (유효기간)
                 .signWith(key, SignatureAlgorithm.HS256) // header "alg": "HS256"
@@ -80,8 +80,11 @@ public class JwtTokenProvider {
         Claims claims = parseClaims(accessToken);
 
         String username = claims.getSubject();
+        log.info("username = {}", username);
         String email = claims.get("email", String.class);
+        log.info("email = {}", email);
         String role = claims.get("role", String.class);
+        log.info("role = {}", role);
 
         if (claims.get(AUTHORITIES_KEY) == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");

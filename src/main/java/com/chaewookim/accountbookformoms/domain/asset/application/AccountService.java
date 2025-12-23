@@ -7,9 +7,11 @@ import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountRespon
 import com.chaewookim.accountbookformoms.global.error.CustomException;
 import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -27,6 +29,8 @@ public class AccountService {
         Asset asset = assetRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
+        log.info("username = {}",  username);
+        log.info("account userName = {}", asset.getUsername());
         if (!username.equals(asset.getUsername())) {
             throw new CustomException(ErrorCode.ACCOUNT_ACCESS_DENIED);
         }
