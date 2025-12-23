@@ -41,7 +41,7 @@ class AccountServiceTest {
         username = "username";
 
         asset = Asset.builder()
-                .userId(userId)
+                .username(username)
                 .balance(BigDecimal.valueOf(1000000))
                 .bank(BankEnum.KB)
                 .build();
@@ -51,7 +51,7 @@ class AccountServiceTest {
                 BankEnum.KB,
                 "3333111133333",
                 BigDecimal.valueOf(1000000),
-                userId
+                username
         );
     }
 

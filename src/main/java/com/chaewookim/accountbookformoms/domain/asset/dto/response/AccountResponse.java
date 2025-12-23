@@ -22,14 +22,14 @@ public record AccountResponse(
         BigDecimal balance,
 
         @NotNull
-        Long userId
+        String username
 ) {
     public static AccountResponse from(Asset asset) {
         return  new AccountResponse(
                 asset.getBank(),
                 asset.getAccountNumber(),
                 asset.getBalance(),
-                asset.getUserId()
+                asset.getUsername()
         );
     }
 }

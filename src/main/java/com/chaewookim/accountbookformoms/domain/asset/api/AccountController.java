@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @Operation(summary = "계좌 등록", description = "사용자가 수입, 지출, 자산 관리에 사용할 계좌를 등록한다.")
-    @GetMapping("/regist")
+    @PostMapping("/regist")
     public ResponseEntity<ApiResponse<AccountResponse>> registAccount(
             @RequestBody AccountRequest request,
             @AuthenticationPrincipal CustomUserDetails userDetails

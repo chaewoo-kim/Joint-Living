@@ -1,5 +1,7 @@
 package com.chaewookim.accountbookformoms.global.jwt;
 
+import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
+import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.domain.user.domain.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -11,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -78,6 +79,10 @@ public class JwtTokenProvider {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
+        String username = claims.getSubject();
+        String email = claims.get("email", String.class);
+        String role = claims.get("role", String.class);
+
         if (claims.get(AUTHORITIES_KEY) == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
@@ -89,7 +94,13 @@ public class JwtTokenProvider {
                         .collect(Collectors.toList());
 
         // UserDetails 객체를 만들어서 Authentication 리턴
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        UserDetails principal = new CustomUserDetails(
+                User.builder()
+                        .username(username)
+                        .email(email)
+                        .password("")
+                        .build()
+        );
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
