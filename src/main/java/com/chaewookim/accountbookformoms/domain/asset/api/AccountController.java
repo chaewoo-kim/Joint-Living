@@ -26,7 +26,11 @@ public class AccountController {
 
     @Operation(summary = "계좌 등록", description = "사용자가 수입, 지출, 자산 관리에 사용할 계좌를 등록한다.")
     @GetMapping("/regist")
-    public ResponseEntity<ApiResponse<AccountResponse>> registAccount(@RequestBody AccountRequest request) {
+    public ResponseEntity<ApiResponse<AccountResponse>> registAccount(
+            @RequestBody AccountRequest request,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+
 
         return ResponseEntity.ok(ApiResponse.success(accountService.registAccount(request)));
     }
