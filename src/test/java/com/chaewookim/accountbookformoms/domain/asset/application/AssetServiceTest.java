@@ -5,7 +5,6 @@ import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
 import com.chaewookim.accountbookformoms.domain.asset.domain.BankEnum;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
-import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
 import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,9 +27,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class AccountServiceTest {
+class AssetServiceTest {
     @InjectMocks
-    private AccountService accountService;
+    private AssetService assetService;
 
     @Mock
     private AssetRepository assetRepository;
@@ -69,7 +68,7 @@ class AccountServiceTest {
         given(assetRepository.save(any(Asset.class))).willReturn(asset);
 
         // when
-        AccountResponse response = accountService.registAccount(username, accountRequest);
+        AccountResponse response = assetService.registAccount(username, accountRequest);
 
         // then
         assertNotNull(response);
@@ -85,7 +84,7 @@ class AccountServiceTest {
         given(assetRepository.findByAccountNumber(accountNumber)).willReturn(Optional.of(asset));
 
         // when
-        accountService.deleteAccount(username, accountNumber);
+        assetService.deleteAccount(username, accountNumber);
 
         // then
         verify(assetRepository, times(1)).findByAccountNumber(accountNumber);
@@ -102,7 +101,7 @@ class AccountServiceTest {
         // when
         CustomException exception = assertThrows(
                 CustomException.class,
-                () -> accountService.deleteAccount(unAuthUser, accountNumber)
+                () -> assetService.deleteAccount(unAuthUser, accountNumber)
         );
 
         // then

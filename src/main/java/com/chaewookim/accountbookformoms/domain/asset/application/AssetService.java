@@ -11,10 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AccountService {
+public class AssetService {
     private final AssetRepository assetRepository;
 
     @Transactional(rollbackFor = CustomException.class)
@@ -22,6 +24,10 @@ public class AccountService {
         Asset asset = AccountRequest.toEntity(request);
 
         return AccountResponse.from(assetRepository.save(asset.updateUsername(username)));
+    }
+
+    public List<AccountResponse> getAllAccounts(String username) {
+        return AccountResponse.from(assetRepository.findAllByUsername(username));
     }
 
     @Transactional(rollbackFor = CustomException.class)

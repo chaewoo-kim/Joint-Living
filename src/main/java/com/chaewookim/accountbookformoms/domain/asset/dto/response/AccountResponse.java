@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public record AccountResponse(
 
@@ -31,6 +32,12 @@ public record AccountResponse(
                 asset.getBalance(),
                 asset.getUsername()
         );
+    }
+
+    public static List<AccountResponse> from(List<Asset> assets) {
+        return assets.stream()
+                .map(AccountResponse::from)
+                .toList();
     }
 }
 
