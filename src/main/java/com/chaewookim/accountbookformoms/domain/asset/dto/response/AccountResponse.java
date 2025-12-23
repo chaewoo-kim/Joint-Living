@@ -1,5 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.asset.dto.response;
 
+import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
 import com.chaewookim.accountbookformoms.domain.asset.domain.BankEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,5 +24,13 @@ public record AccountResponse(
         @NotNull
         Long userId
 ) {
+    public static AccountResponse from(Asset asset) {
+        return  new AccountResponse(
+                asset.getBank(),
+                asset.getAccountNumber(),
+                asset.getBalance(),
+                asset.getUserId()
+        );
+    }
 }
 

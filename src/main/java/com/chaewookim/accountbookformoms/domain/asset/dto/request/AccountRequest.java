@@ -1,5 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.asset.dto.request;
 
+import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
 import com.chaewookim.accountbookformoms.domain.asset.domain.BankEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,4 +24,12 @@ public record AccountRequest(
         @NotNull
         Long userId
 ) {
+    public static Asset toEntity(AccountRequest accountRequest) {
+        return Asset.builder()
+                .userId(accountRequest.userId)
+                .bank(accountRequest.bank)
+                .accountNumber(accountRequest.accountNumber)
+                .balance(accountRequest.balance)
+                .build();
+    }
 }

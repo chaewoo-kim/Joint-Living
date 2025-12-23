@@ -3,13 +3,13 @@ package com.chaewookim.accountbookformoms.domain.asset.api;
 import com.chaewookim.accountbookformoms.domain.asset.application.AccountService;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
+import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,18 +28,18 @@ public class AccountController {
     @GetMapping("/regist")
     public ResponseEntity<ApiResponse<AccountResponse>> registAccount(
             @RequestBody AccountRequest request,
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
+        String username = userDetails.getUsername();
 
-
-        return ResponseEntity.ok(ApiResponse.success(accountService.registAccount(request)));
+        return ResponseEntity.ok(ApiResponse.success(accountService.registAccount(username, request)));
     }
 
     @Operation(summary = "계좌 삭제", description = "등록된 사용자의 계좌를 삭제한다.")
     @GetMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<String>> deleteAccount(
             @PathVariable String id,
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         accountService.deleteAccount(id);
 

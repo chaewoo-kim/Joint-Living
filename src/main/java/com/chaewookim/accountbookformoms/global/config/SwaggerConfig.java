@@ -38,4 +38,27 @@ public class SwaggerConfig {
                 .pathsToMatch("/**")
                 .build();
     }
+
+    @Bean
+    public OpenAPI openAPI() {
+        String jwtSchemeName = "bearerAuth";
+
+        SecurityScheme securityScheme = new SecurityScheme()
+                .name(jwtSchemeName)
+                .type(SecurityScheme.Type.HTTP)   // HTTP 인증
+                .scheme("bearer")                 // Bearer 토큰
+                .bearerFormat("JWT")              // 표시용
+                .in(SecurityScheme.In.HEADER);    // Authorization 헤더
+
+        SecurityRequirement securityRequirement = new SecurityRequirement()
+                .addList(jwtSchemeName);
+
+        return new OpenAPI()
+                .components(new Components()
+                        .addSecuritySchemes(jwtSchemeName, securityScheme))
+                .addSecurityItem(securityRequirement)
+                .info(new Info()
+                        .title("AccountBookForMoms API")
+                        .version("v1"));
+    }
 }
