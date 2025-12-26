@@ -32,6 +32,16 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public GroupedOpenApi transactionGroup() {
+        return GroupedOpenApi.builder()
+                .group("Transaction API")
+                .pathsToMatch(
+                        "/api/v1/transaction/**"
+                )
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi allGroup() {
         return GroupedOpenApi.builder()
                 .group("전체 API")
