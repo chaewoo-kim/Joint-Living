@@ -1,4 +1,4 @@
-package com.chaewookim.accountbookformoms.domain.asset.domain;
+package com.chaewookim.accountbookformoms.domain.asset.entity;
 
 
 import com.chaewookim.accountbookformoms.global.entity.BaseEntity;

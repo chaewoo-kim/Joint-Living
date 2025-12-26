@@ -1,4 +1,4 @@
-package com.chaewookim.accountbookformoms.domain.asset.domain;
+package com.chaewookim.accountbookformoms.domain.asset.entity;
 
 public enum BankEnum {
 

@@ -1,8 +1,8 @@
 package com.chaewookim.accountbookformoms.domain.asset.application;
 
 import com.chaewookim.accountbookformoms.domain.asset.dao.AssetRepository;
-import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
-import com.chaewookim.accountbookformoms.domain.asset.domain.BankEnum;
+import com.chaewookim.accountbookformoms.domain.asset.entity.Asset;
+import com.chaewookim.accountbookformoms.domain.asset.entity.BankEnum;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.request.AccountUpdateRequest;
 import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
