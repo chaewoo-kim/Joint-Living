@@ -1,7 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.asset.dao;
 
-import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
-import com.chaewookim.accountbookformoms.domain.asset.dto.response.AccountResponse;
+import com.chaewookim.accountbookformoms.domain.asset.entity.Asset;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

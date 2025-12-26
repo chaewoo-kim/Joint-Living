@@ -1,7 +1,7 @@
 package com.chaewookim.accountbookformoms.domain.asset.dto.request;
 
-import com.chaewookim.accountbookformoms.domain.asset.domain.Asset;
-import com.chaewookim.accountbookformoms.domain.asset.domain.BankEnum;
+import com.chaewookim.accountbookformoms.domain.asset.entity.Asset;
+import com.chaewookim.accountbookformoms.domain.asset.entity.BankEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

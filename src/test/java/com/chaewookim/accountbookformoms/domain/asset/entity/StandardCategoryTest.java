@@ -1,4 +1,4 @@
-package com.chaewookim.accountbookformoms.domain.asset.domain;
+package com.chaewookim.accountbookformoms.domain.asset.entity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

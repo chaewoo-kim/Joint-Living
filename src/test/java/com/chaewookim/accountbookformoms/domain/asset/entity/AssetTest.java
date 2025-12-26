@@ -1,11 +1,9 @@
-package com.chaewookim.accountbookformoms.domain.asset.domain;
+package com.chaewookim.accountbookformoms.domain.asset.entity;
 
-import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
