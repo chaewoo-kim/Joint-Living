@@ -1,12 +1,15 @@
 package com.chaewookim.accountbookformoms.global.jwt;
 
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
-import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.domain.user.domain.UserRole;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,13 +49,17 @@ public class JwtTokenProvider {
         long now = (new Date()).getTime();
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 
-        String authorities = authentication.getAuthorities().stream()
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        String authorities = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
+        Long userId = userDetails.getUserId();
 
         return Jwts.builder()
                 .setSubject(authentication.getName())                 // payload "sub": "username"
                 .claim(AUTHORITIES_KEY, authorities) // payload "auth": "ROLE_USER"
+                .claim("userId", userId)
                 .setExpiration(accessTokenExpiresIn) // payload "exp": 1234567890 (유효기간)
                 .signWith(key, SignatureAlgorithm.HS256) // header "alg": "HS256"
                 .compact();
@@ -80,11 +87,11 @@ public class JwtTokenProvider {
         Claims claims = parseClaims(accessToken);
 
         String username = claims.getSubject();
-        log.info("username = {}", username);
         String email = claims.get("email", String.class);
-        log.info("email = {}", email);
         String role = claims.get("role", String.class);
-        log.info("role = {}", role);
+
+        Number userIdNum = claims.get("userId", Long.class);
+        Long userId = (userIdNum == null) ? null : userIdNum.longValue();
 
         if (claims.get(AUTHORITIES_KEY) == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
@@ -98,11 +105,11 @@ public class JwtTokenProvider {
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails principal = new CustomUserDetails(
-                User.builder()
-                        .username(username)
-                        .email(email)
-                        .password("")
-                        .build()
+                userId,
+                username,
+                "",
+                email,
+                UserRole.valueOf(role)
         );
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
