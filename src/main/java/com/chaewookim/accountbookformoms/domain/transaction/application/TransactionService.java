@@ -7,6 +7,8 @@ import com.chaewookim.accountbookformoms.domain.transaction.entity.Transaction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TransactionService {
 
@@ -19,5 +21,9 @@ public class TransactionService {
         transactionRepository.save(transaction);
 
         return TransactionResponse.from(transaction);
+    }
+
+    public List<TransactionResponse> getAllTransactions(Long userId) {
+        return Transaction.from(transactionRepository.getAllByUserId(userId));
     }
 }
