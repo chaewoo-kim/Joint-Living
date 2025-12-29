@@ -22,9 +22,7 @@ public record AccountRequest(
         BigDecimal balance,
 
         @NotNull
-        String username,
-
-        Long id
+        String username
 ) {
     public static Asset toEntity(AccountRequest accountRequest) {
         return Asset.builder()
