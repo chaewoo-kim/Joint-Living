@@ -110,4 +110,8 @@ public class Transaction extends BaseEntity {
     public void updateAmount(@NotNull BigDecimal amount) {
         if (amount != null) this.amount = amount;
     }
+
+    public void updateType(@NotBlank TransactionTypeEnum type) {
+        if (type != null) this.type = type;
+    }
 }

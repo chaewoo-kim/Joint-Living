@@ -2,8 +2,10 @@ package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.TransactionService;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionAccountRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionAmountRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTitleUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTypeRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
@@ -98,6 +100,18 @@ public class TransactionController {
         Long userId = user.getUserId();
 
         return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionAmount(id, requestAmount, userId)));
+    }
+
+    @Operation(description = "수입/지출 타입 수정")
+    @PatchMapping("/{id}/type")
+    public ResponseEntity<ApiResponse<TransactionResponse>> updateTransactionType(
+            @PathVariable Long id,
+            @RequestBody TransactionTypeRequest requestType,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionType(id, requestType, userId)));
     }
 
     @Operation(description = "수입/지출 삭제")

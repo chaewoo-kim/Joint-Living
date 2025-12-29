@@ -6,6 +6,7 @@ import com.chaewookim.accountbookformoms.domain.transaction.dto.request.Transact
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionAmountRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTitleUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTypeRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.Transaction;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
@@ -70,6 +71,15 @@ public class TransactionService {
                 .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
 
         target.updateAmount(requestAmount.amount());
+
+        return TransactionResponse.from(target);
+    }
+
+    public TransactionResponse updateTransactionType(Long id, TransactionTypeRequest requestType, Long userId) {
+        Transaction target = transactionRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
+
+        target.updateType(requestType.type());
 
         return TransactionResponse.from(target);
     }
