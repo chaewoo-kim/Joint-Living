@@ -5,6 +5,8 @@ import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtra
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.FixedTransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.FixedTransaction;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
+import com.chaewookim.accountbookformoms.global.error.CustomException;
+import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -98,5 +102,15 @@ class FixedTransactionServiceTests {
 
         assertEquals(1, response.size());
         assertEquals("title", response.get(0).title());
+    }
+    @Test
+    @DisplayName("고정지출/고정수입 조회 - 실패 - 조회 결과 없음")
+    void getAllFixedTransactions_Failure() {
+        // given
+        given(fixedTransactionRepository.findAllByUserId(userId)).willReturn(Collections.emptyList());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () -> fixedTransactionService.getAllFixedTransactions(userId));
+        assertEquals(ErrorCode.NO_FIXED_TRANSACTIONS, exception.getErrorCode());
     }
 }
