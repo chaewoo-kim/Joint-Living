@@ -106,4 +106,8 @@ public class Transaction extends BaseEntity {
     public void updateAsset(@NotNull Long assetId) {
         if (assetId != null) this.assetId = assetId;
     }
+
+    public void updateAmount(@NotNull BigDecimal amount) {
+        if (amount != null) this.amount = amount;
+    }
 }

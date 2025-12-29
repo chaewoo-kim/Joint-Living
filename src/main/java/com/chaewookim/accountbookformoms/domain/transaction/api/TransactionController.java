@@ -88,6 +88,18 @@ public class TransactionController {
         return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionAccount(id, requestAccount, userId)));
     }
 
+    @Operation(description = "수입/지출 금액 수정")
+    @PatchMapping("/{id}/amount")
+    public ResponseEntity<ApiResponse<TransactionResponse>> updateTransactionAmount(
+            @PathVariable Long id,
+            @RequestBody TransactionAmountRequest requestAmount,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionAmount(id, requestAmount, userId)));
+    }
+
     @Operation(description = "수입/지출 삭제")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<String>> deleteTransaction(
