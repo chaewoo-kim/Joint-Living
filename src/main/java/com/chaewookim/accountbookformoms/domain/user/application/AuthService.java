@@ -2,6 +2,7 @@ package com.chaewookim.accountbookformoms.domain.user.application;
 
 import com.chaewookim.accountbookformoms.domain.user.dao.RefreshTokenRepository;
 import com.chaewookim.accountbookformoms.domain.user.dao.UserRepository;
+import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.domain.user.domain.RefreshToken;
 import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.LoginRequest;
@@ -47,8 +48,16 @@ public class AuthService {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
+        CustomUserDetails customUserDetails = new CustomUserDetails(
+                user.getId(),
                 user.getUsername(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getRole()
+        );
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                customUserDetails,
                 user.getPassword(),
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().getKey()))
         );

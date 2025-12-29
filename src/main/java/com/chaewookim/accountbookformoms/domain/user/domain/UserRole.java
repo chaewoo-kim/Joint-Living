@@ -2,6 +2,8 @@ package com.chaewookim.accountbookformoms.domain.user.domain;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum UserRole {
 
@@ -14,5 +16,12 @@ public enum UserRole {
     UserRole(String key, String title) {
         this.key = key;
         this.title = title;
+    }
+
+    public static UserRole findByKey(String key) {
+        return Arrays.stream(UserRole.values())
+                .filter(role -> role.getKey().equals(key))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 권한을 찾을 수 없습니다: " + key));
     }
 }

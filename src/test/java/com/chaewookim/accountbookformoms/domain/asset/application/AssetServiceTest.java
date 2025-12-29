@@ -60,8 +60,7 @@ class AssetServiceTest {
                 BankEnum.KB,
                 accountNumber,
                 BigDecimal.valueOf(1000000),
-                username,
-                assetId
+                username
         );
 
         assetList = List.of(

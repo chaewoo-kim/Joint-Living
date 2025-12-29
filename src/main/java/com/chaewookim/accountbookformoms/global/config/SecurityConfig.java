@@ -69,7 +69,10 @@ public class SecurityConfig {
                                 "/api/v1/users/withdraw",
 
                                 // account 부분
-                                "/api/v1/account"
+                                "/api/v1/account/**",
+
+                                // transaction 부분
+                                "/api/v1/transactions/**"
                         ).authenticated()
 
                         // 그 외 모든 요청은 인증 필요

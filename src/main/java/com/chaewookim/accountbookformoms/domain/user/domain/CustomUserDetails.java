@@ -10,16 +10,26 @@ import java.util.List;
 
 @Getter
 public class CustomUserDetails implements UserDetails {
+    private final Long userId;
     private final String username;
     private final String password;
     private final String email;
     private final UserRole role;
 
     public CustomUserDetails(User user) {
+        this.userId = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.email = user.getEmail();
         this.role = user.getRole();
+    }
+
+    public CustomUserDetails(Long userId, String username, String password, String email, UserRole role) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
     }
 
     @Override
