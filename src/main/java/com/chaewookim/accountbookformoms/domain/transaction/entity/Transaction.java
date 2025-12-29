@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -100,5 +101,9 @@ public class Transaction extends BaseEntity {
 
     public void updateMemo(@NotBlank String memo) {
         if (memo != null) this.memo = memo;
+    }
+
+    public void updateAsset(@NotNull Long assetId) {
+        if (assetId != null) this.assetId = assetId;
     }
 }

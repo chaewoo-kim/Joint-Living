@@ -1,6 +1,7 @@
 package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.TransactionService;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionAccountRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTitleUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
@@ -73,6 +74,18 @@ public class TransactionController {
         Long userId = user.getUserId();
 
         return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionMemo(id, requestMemo, userId)));
+    }
+
+    @Operation(description = "수입/지출 계좌 수정")
+    @PatchMapping("/{id}/account")
+    public ResponseEntity<ApiResponse<TransactionResponse>> updateTransactionAccount(
+            @PathVariable Long id,
+            @RequestBody TransactionAccountRequest requestAccount,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionAccount(id, requestAccount, userId)));
     }
 
     @Operation(description = "수입/지출 삭제")
