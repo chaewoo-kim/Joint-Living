@@ -2,7 +2,7 @@ package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.FixedTransactionService;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionFixRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.TransactionFixResponse;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.FixedTransactionResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,26 +19,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/fixs")
+@RequestMapping("/api/v1/fixed-transactions")
 public class FixedTransactionController {
 
     private final FixedTransactionService fixedTransactionService;
 
-    @Operation(description = "고정 수입/고정 지출 추가")
+    @Operation(summary = "고정 수입/고정 지출 추가", description = "고정 수입/고정 지출 추가")
     @PostMapping
-    public ResponseEntity<ApiResponse<TransactionFixResponse>> createFix (
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> createFix (
             @RequestBody TransactionFixRequest request,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(null));
-//        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.createFix(request, userId)));
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.createFix(request, userId)));
     }
 
     @Operation(description = "고정 수입/고정 지출 수정")
     @PatchMapping
-    public ResponseEntity<ApiResponse<TransactionFixResponse>> updateFix (
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFix (
             @RequestBody TransactionFixRequest request,
             @AuthenticationPrincipal CustomUserDetails user
     ) {

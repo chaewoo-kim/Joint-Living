@@ -1,5 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction;
 
+import com.chaewookim.accountbookformoms.domain.transaction.entity.FixedTransaction;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record TransactionFixResponse(
+public record FixedTransactionResponse(
         @NotNull
         Long id,
 
@@ -34,9 +35,19 @@ public record TransactionFixResponse(
         @NotNull
         TransactionTypeEnum type,
 
-        @NotNull
-        Boolean isFix,
-
         LocalDateTime repeatDate
 ) {
+    public static FixedTransactionResponse from(FixedTransaction fixedTransaction) {
+        return new FixedTransactionResponse(
+                fixedTransaction.getId(),
+                fixedTransaction.getTitle(),
+                fixedTransaction.getMemo(),
+                fixedTransaction.getUserId(),
+                fixedTransaction.getAssetId(),
+                fixedTransaction.getCategoryId(),
+                fixedTransaction.getAmount(),
+                fixedTransaction.getType(),
+                fixedTransaction.getRepeatDate()
+        );
+    }
 }
