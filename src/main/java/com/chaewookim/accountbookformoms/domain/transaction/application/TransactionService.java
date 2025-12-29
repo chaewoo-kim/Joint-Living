@@ -85,4 +85,9 @@ public class TransactionService {
 
         return TransactionResponse.from(target);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteTransaction(Long id, Long userId) {
+        transactionRepository.deleteByIdAndUserId(id, userId);
+    }
 }

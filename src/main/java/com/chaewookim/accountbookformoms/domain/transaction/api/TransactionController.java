@@ -115,15 +115,14 @@ public class TransactionController {
     }
 
     @Operation(description = "수입/지출 삭제")
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<ApiResponse<String>> deleteTransaction(
-            @PathVariable String id,
+            @PathVariable Long id,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         Long userId = user.getUserId();
-        Long transactionId = Long.parseLong(id);
 
-//        transactionService.deleteTransaction(transactionId, userId)
+        transactionService.deleteTransaction(id, userId);
 
         return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }
