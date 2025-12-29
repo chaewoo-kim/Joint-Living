@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/fix")
+@RequestMapping("/api/v1/fixs")
 public class FixedTransactionController {
 
     private final FixedTransactionService fixedTransactionService;
@@ -32,7 +32,8 @@ public class FixedTransactionController {
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.createFix(request, userId)));
+        return ResponseEntity.ok(ApiResponse.success(null));
+//        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.createFix(request, userId)));
     }
 
     @Operation(description = "고정 수입/고정 지출 수정")
@@ -43,7 +44,8 @@ public class FixedTransactionController {
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId)));
+        return ResponseEntity.ok(ApiResponse.success(null));
+//        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId)));
     }
 
     @Operation(description = "고정 수입/고정 지출 삭제")
@@ -55,8 +57,9 @@ public class FixedTransactionController {
         Long userId = user.getUserId();
         Long transactionId = Long.parseLong(id);
 
-        fixedTransactionService.deleteFix(transactionId, userId)
+//        fixedTransactionService.deleteFix(transactionId, userId);
 
-        return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
+        return ResponseEntity.ok(ApiResponse.success(null));
+//        return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }
 }

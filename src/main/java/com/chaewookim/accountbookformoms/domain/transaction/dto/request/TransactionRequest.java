@@ -9,9 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record TransactionRequest(
-        @NotNull
-        Long id,
-
         @NotBlank
         String title,
 

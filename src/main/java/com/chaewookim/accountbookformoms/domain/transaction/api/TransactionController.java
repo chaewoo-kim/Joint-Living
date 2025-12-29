@@ -1,9 +1,8 @@
 package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.TransactionService;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionFixRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,7 +45,8 @@ public class TransactionController {
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransaction(request, userId)));
+        return ResponseEntity.ok(ApiResponse.success(null));
+//        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransaction(request, userId)));
     }
 
     @Operation(description = "수입/지출 삭제")
@@ -58,7 +58,7 @@ public class TransactionController {
         Long userId = user.getUserId();
         Long transactionId = Long.parseLong(id);
 
-        transactionService.deleteTransaction(transactionId, userId)
+//        transactionService.deleteTransaction(transactionId, userId)
 
         return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }

@@ -1,5 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.transaction.dto.response;
 
+import com.chaewookim.accountbookformoms.domain.transaction.entity.Transaction;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,4 +40,18 @@ public record TransactionResponse(
 
         LocalDateTime repeatDate
 ) {
+    public static TransactionResponse from(Transaction transaction) {
+        return new TransactionResponse(
+                transaction.getId(),
+                transaction.getTitle(),
+                transaction.getMemo(),
+                transaction.getUserId(),
+                transaction.getAssetId(),
+                transaction.getCategoryId(),
+                transaction.getAmount(),
+                transaction.getType(),
+                transaction.getIsFixed(),
+                transaction.getRepeatDate()
+        );
+    }
 }
