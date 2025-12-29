@@ -46,7 +46,7 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group("FixedTransaction API")
                 .pathsToMatch(
-                        "/api/v1/fixs/**"
+                        "/api/v1/fixed-transactions/**"
                 )
                 .build();
     }
