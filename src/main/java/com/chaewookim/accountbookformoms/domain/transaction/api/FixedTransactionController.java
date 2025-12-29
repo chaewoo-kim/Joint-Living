@@ -58,7 +58,7 @@ public class FixedTransactionController {
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFixTitle(request, userId, id)));
     }
 
     @Operation(description = "고정 수입/고정 지출 삭제")

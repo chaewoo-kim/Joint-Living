@@ -54,9 +54,9 @@ public class FixedTransactionService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public FixedTransactionResponse updateFix(FixedTransactionTitleUpdate request, Long userId, Long id) {
+    public FixedTransactionResponse updateFixTitle(FixedTransactionTitleUpdate request, Long userId, Long id) {
         FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
 
         fixedTransaction.updateTitle(request.title());
 

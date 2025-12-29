@@ -2,6 +2,7 @@ package com.chaewookim.accountbookformoms.domain.transaction.application;
 
 import com.chaewookim.accountbookformoms.domain.transaction.dao.FixedTransactionRepository;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionTitleUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.FixedTransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.FixedTransaction;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,6 +44,7 @@ class FixedTransactionServiceTests {
 
     private FixedTransaction fixedTransaction;
     private FixedTransactionRequest fixedTransactionRequest;
+    private FixedTransactionTitleUpdate  fixedTransactionTitleUpdate;
 
     @BeforeEach
     void setUp() {
@@ -73,6 +76,10 @@ class FixedTransactionServiceTests {
                 amount,
                 TransactionTypeEnum.INCOME,
                 LocalDateTime.now()
+        );
+
+        fixedTransactionTitleUpdate = new FixedTransactionTitleUpdate(
+                "updateTitle"
         );
     }
 
@@ -111,6 +118,31 @@ class FixedTransactionServiceTests {
 
         // when & then
         CustomException exception = assertThrows(CustomException.class, () -> fixedTransactionService.getAllFixedTransactions(userId));
+        assertEquals(ErrorCode.NO_FIXED_TRANSACTIONS, exception.getErrorCode());
+    }
+
+
+    @Test
+    @DisplayName("고정 트랜잭션 타이틀 수정 - 성공")
+    void updateTitle_Success() {
+        // given
+        given(fixedTransactionRepository.findByIdAndUserId(fixedTransactionId, userId)).willReturn(Optional.of(fixedTransaction));
+
+        // when
+        FixedTransactionResponse response = fixedTransactionService.updateFixTitle(fixedTransactionTitleUpdate, userId, fixedTransactionId);
+
+        // then
+        assertNotNull(response);
+        assertEquals("updateTitle", fixedTransactionTitleUpdate.title());
+    }
+    @Test
+    @DisplayName("고정 트랜잭션 타이틀 수정 - 실패 - 조회 결과 없음")
+    void updateTitle_Failure() {
+        // given
+        given(fixedTransactionRepository.findByIdAndUserId(fixedTransactionId, userId)).willReturn(Optional.empty());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () -> fixedTransactionService.updateFixTitle(fixedTransactionTitleUpdate, userId, fixedTransactionId));
         assertEquals(ErrorCode.NO_FIXED_TRANSACTIONS, exception.getErrorCode());
     }
 }
