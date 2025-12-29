@@ -1,4 +1,4 @@
-package com.chaewookim.accountbookformoms.domain.transaction.dto.request;
+package com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction;
 
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import jakarta.validation.constraints.NotBlank;

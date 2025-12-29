@@ -1,8 +1,8 @@
 package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.FixedTransactionService;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionFixRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionFixResponse;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionFixRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.TransactionFixResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;

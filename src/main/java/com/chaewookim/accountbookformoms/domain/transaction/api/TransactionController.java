@@ -1,12 +1,13 @@
 package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.TransactionService;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionAccountRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionAmountRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTitleUpdate;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTypeRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionAccountRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionAmountRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionMemoRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionTitleUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionTypeRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
