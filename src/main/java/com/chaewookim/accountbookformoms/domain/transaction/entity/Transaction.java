@@ -69,7 +69,7 @@ public class Transaction extends BaseEntity {
                 .categoryId(request.categoryId())
                 .amount(request.amount())
                 .type(request.type())
-                .isFixed(request.isFix())
+                .isFixed(request.isFixed())
                 .repeatDate(request.repeatDate())
                 .build();
     }

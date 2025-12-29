@@ -45,7 +45,13 @@ public enum ErrorCode {
     TRANSACTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 내역을 찾을 수 없거나 접근 권한이 없습니다."),
 
     // 고정 트랜잭션 존재하지 않음
-    NO_FIXED_TRANSACTIONS(HttpStatus.NOT_FOUND, "고정수입 또는 고정지출을 찾을 수 없거나 접근 권한이 없습니다.");
+    NO_FIXED_TRANSACTIONS(HttpStatus.NOT_FOUND, "고정수입 또는 고정지출을 찾을 수 없거나 접근 권한이 없습니다."),
+
+    // 계좌 찾을 수 없음
+    ASSET_NOT_FOUND(HttpStatus.NOT_FOUND, "계좌를 찾을 수 없거나 접근 권한이 없습니다."),
+
+    // 금액은 NULL이 될 수 없음
+    AMOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "금액은 비어있을 수 없습니다.");
 
     private final HttpStatus status;
     private final String message;

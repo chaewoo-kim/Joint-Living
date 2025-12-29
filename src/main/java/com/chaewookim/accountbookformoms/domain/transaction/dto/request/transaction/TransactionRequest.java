@@ -32,7 +32,9 @@ public record TransactionRequest(
         TransactionTypeEnum type,
 
         @NotNull
-        Boolean isFix,
+        Boolean isFixed,
+
+        Long fixedId,
 
         LocalDateTime repeatDate
 ) {
