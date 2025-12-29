@@ -280,6 +280,10 @@ class TransactionServiceTests {
     @DisplayName("트랜잭션 금액 수정 - 성공")
     void updateTransactionAmount_Success() {
         // given
+        given(assetRepository.findByIdAndUsername(assetId, username)).willReturn(Optional.of(asset));
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
         given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.of(transaction));
 
         // when
@@ -295,6 +299,10 @@ class TransactionServiceTests {
     @DisplayName("트랜잭션 금액 수정 - 실패 - TRANSACTION_NOT_FOUND")
     void updateTransactionAmount_Failure() {
         // given
+        given(assetRepository.findByIdAndUsername(assetId, username)).willReturn(Optional.of(asset));
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
         given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.empty());
 
         // when & then
