@@ -92,4 +92,8 @@ public class Transaction extends BaseEntity {
                 .map(Transaction::from)
                 .toList();
     }
+
+    public void updateTitle(String title) {
+        if (title != null) this.title = title;
+    }
 }

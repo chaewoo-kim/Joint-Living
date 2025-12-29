@@ -2,6 +2,7 @@ package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.TransactionService;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTitleUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
@@ -50,16 +51,28 @@ public class TransactionController {
         return ResponseEntity.ok(ApiResponse.success(transactionService.getAllTransactions(userId)));
     }
 
-    @Operation(description = "수입/지출 수정")
-    @PatchMapping("/update")
-    public ResponseEntity<ApiResponse<TransactionResponse>> updateTransaction(
-            @RequestBody TransactionRequest request,
+    @Operation(description = "수입/지출 제목 수정")
+    @PatchMapping("/{id}/title")
+    public ResponseEntity<ApiResponse<TransactionResponse>> updateTransactionTitle(
+            @PathVariable Long id,
+            @RequestBody TransactionTitleUpdate requestTitle,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(null));
-//        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransaction(request, userId)));
+        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionTitle(id, requestTitle, userId)));
+    }
+
+    @Operation(description = "수입/지출 금액 수정")
+    @PatchMapping("/update/{id}/{title}")
+    public ResponseEntity<ApiResponse<TransactionResponse>> updateTransactionTitle(
+            @PathVariable Long id,
+            @PathVariable String title,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionTitle(id, title, userId)));
     }
 
     @Operation(description = "수입/지출 삭제")

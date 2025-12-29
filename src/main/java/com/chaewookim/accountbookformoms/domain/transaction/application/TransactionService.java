@@ -2,8 +2,11 @@ package com.chaewookim.accountbookformoms.domain.transaction.application;
 
 import com.chaewookim.accountbookformoms.domain.transaction.dao.TransactionRepository;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTitleUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.Transaction;
+import com.chaewookim.accountbookformoms.global.error.CustomException;
+import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,16 @@ public class TransactionService {
     }
 
     public List<TransactionResponse> getAllTransactions(Long userId) {
-        return Transaction.from(transactionRepository.getAllByUserId(userId));
+        return Transaction.from(transactionRepository.findAllByUserId(userId));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public TransactionResponse updateTransactionTitle(Long id, TransactionTitleUpdate requestTitle, Long userId) {
+        Transaction target = transactionRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
+
+        target.updateTitle(requestTitle.title());
+
+        return TransactionResponse.from(target);
     }
 }
