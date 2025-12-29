@@ -16,9 +16,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class FixedTransactionServiceTests {
@@ -79,5 +81,22 @@ class FixedTransactionServiceTests {
         // then
         assertNotNull(response);
         assertEquals("title", fixedTransaction.getTitle());
+    }
+
+
+    @Test
+    @DisplayName("고정지출/고정수입 조회 - 성공")
+    void getAllFixedTransactions_Success() {
+        // given
+        given(fixedTransactionRepository.findAllByUserId(userId)).willReturn(List.of(fixedTransaction));
+
+        // when
+        List<FixedTransactionResponse> response = fixedTransactionService.getAllFixedTransactions(userId);
+
+        // then
+        assertNotNull(response);
+
+        assertEquals(1, response.size());
+        assertEquals("title", response.get(0).title());
     }
 }
