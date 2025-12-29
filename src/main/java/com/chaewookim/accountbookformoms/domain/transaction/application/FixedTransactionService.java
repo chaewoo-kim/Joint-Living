@@ -42,9 +42,18 @@ public class FixedTransactionService {
     }
 
     public List<FixedTransactionResponse> getAllFixedTransactions(Long userId) {
-        return FixedTransactionResponse.from(fixedTransactionRepository.findAllByUserId(userId));
+        List<FixedTransaction> fixedTransactionList = fixedTransactionRepository.findAllByUserId(userId);
+
+        int result = fixedTransactionList.size();
+
+        if (result == 0) {
+            throw new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS);
+        }
+
+        return FixedTransactionResponse.from(fixedTransactionList);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public FixedTransactionResponse updateFix(FixedTransactionTitleUpdate request, Long userId, Long id) {
         FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
