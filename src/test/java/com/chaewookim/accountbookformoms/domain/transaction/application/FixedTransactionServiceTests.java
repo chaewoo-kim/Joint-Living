@@ -129,7 +129,7 @@ class FixedTransactionServiceTests {
         given(fixedTransactionRepository.findByIdAndUserId(fixedTransactionId, userId)).willReturn(Optional.of(fixedTransaction));
 
         // when
-        FixedTransactionResponse response = fixedTransactionService.updateFixTitle(fixedTransactionTitleUpdate, userId, fixedTransactionId);
+        FixedTransactionResponse response = fixedTransactionService.updateFix(fixedTransactionTitleUpdate, userId, fixedTransactionId);
 
         // then
         assertNotNull(response);
@@ -142,7 +142,7 @@ class FixedTransactionServiceTests {
         given(fixedTransactionRepository.findByIdAndUserId(fixedTransactionId, userId)).willReturn(Optional.empty());
 
         // when & then
-        CustomException exception = assertThrows(CustomException.class, () -> fixedTransactionService.updateFixTitle(fixedTransactionTitleUpdate, userId, fixedTransactionId));
+        CustomException exception = assertThrows(CustomException.class, () -> fixedTransactionService.updateFix(fixedTransactionTitleUpdate, userId, fixedTransactionId));
         assertEquals(ErrorCode.NO_FIXED_TRANSACTIONS, exception.getErrorCode());
     }
 }

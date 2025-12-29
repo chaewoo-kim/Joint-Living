@@ -1,8 +1,14 @@
 package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.FixedTransactionService;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionAccountUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionAmountUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionCategoryUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionMemoUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionRepeatDateUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionTitleUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionTypeUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.FixedTransactionResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
@@ -51,14 +57,86 @@ public class FixedTransactionController {
 
     @Operation(summary = "고정 수입/고정 지출 타이틀 수정", description = "고정 수입/고정 지출에 대한 타이틀(제목) 수정")
     @PatchMapping("{id}/title")
-    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransactionTitle (
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransaction (
             @PathVariable Long id,
             @RequestBody FixedTransactionTitleUpdate request,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFixTitle(request, userId, id)));
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
+    }
+
+    @Operation(summary = "고정 수입/고정 지출 메모 수정", description = "고정 수입/고정 지출에 대한 메모 수정")
+    @PatchMapping("{id}/memo")
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransaction (
+            @PathVariable Long id,
+            @RequestBody FixedTransactionMemoUpdate request,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
+    }
+
+    @Operation(summary = "고정 수입/고정 지출 계좌 수정", description = "고정 수입/고정 지출에 대한 지불/지급 계좌 수정")
+    @PatchMapping("{id}/account")
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransaction (
+            @PathVariable Long id,
+            @RequestBody FixedTransactionAccountUpdate request,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
+    }
+
+    @Operation(summary = "고정 수입/고정 지출 카테고리 수정", description = "고정 수입/고정 지출에 대한 카테고리 수정")
+    @PatchMapping("{id}/category")
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransaction (
+            @PathVariable Long id,
+            @RequestBody FixedTransactionCategoryUpdate request,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
+    }
+
+    @Operation(summary = "고정 수입/고정 지출 금액 수정", description = "고정 수입/고정 지출에 대한 지불/지급받는 금액 수정")
+    @PatchMapping("{id}/amount")
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransaction (
+            @PathVariable Long id,
+            @RequestBody FixedTransactionAmountUpdate request,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
+    }
+
+    @Operation(summary = "고정 수입/고정 지출 타입 수정", description = "고정 수입/고정 지출에 대해 수입인지 지출인지 수정")
+    @PatchMapping("{id}/type")
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransaction (
+            @PathVariable Long id,
+            @RequestBody FixedTransactionTypeUpdate request,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
+    }
+
+    @Operation(summary = "고정 수입/고정 지출 날짜 수정", description = "고정 수입/고정 지출에 대해 지불/지급 날짜 수정")
+    @PatchMapping("{id}/repeat-date")
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransaction (
+            @PathVariable Long id,
+            @RequestBody FixedTransactionRepeatDateUpdate request,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
     }
 
     @Operation(description = "고정 수입/고정 지출 삭제")

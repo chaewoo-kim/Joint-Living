@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,6 +58,40 @@ public class FixedTransaction extends BaseEntity {
     public void updateTitle(@NotBlank String title) {
         if (title != null && !title.isEmpty()) {
             this.title = title;
+        }
+    }
+
+    public void updateMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public void updateAsset(@NotNull Long assetId) {
+        if (assetId != null && assetId != 0) {
+            this.assetId = assetId;
+        }
+    }
+
+    public void updateType(@NotNull TransactionTypeEnum type) {
+        if (type != null) {
+            this.type = type;
+        }
+    }
+
+    public void updateAmount(@NotNull BigDecimal amount) {
+        if (amount != null) {
+            this.amount = amount;
+        }
+    }
+
+    public void updateCategory(@NotNull Long categoryId) {
+        if (categoryId != null && categoryId != 0) {
+            this.categoryId = categoryId;
+        }
+    }
+
+    public void updateRepeatDate(@NotNull LocalDateTime date) {
+        if (date != null) {
+            this.repeatDate = date;
         }
     }
 }
