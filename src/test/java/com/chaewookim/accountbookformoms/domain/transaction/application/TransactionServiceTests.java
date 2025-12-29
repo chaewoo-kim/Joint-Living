@@ -113,7 +113,9 @@ class TransactionServiceTests {
         );
 
         requestAmount =   new TransactionAmountRequest(
-                newAmount
+                newAmount,
+                TransactionTypeEnum.EXPENSE,
+                assetId
         );
 
         requestType =  new TransactionTypeRequest(

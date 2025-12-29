@@ -11,6 +11,7 @@ import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transact
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionTypeRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.Transaction;
+import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import com.chaewookim.accountbookformoms.domain.user.dao.UserRepository;
 import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -39,16 +41,7 @@ public class TransactionService {
         Asset asset = assetRepository.findByIdAndUsername(request.assetId(), user.getUsername())
                 .orElseThrow(() -> new CustomException(ErrorCode.ASSET_NOT_FOUND));
 
-        switch (request.type()) {
-            case EXPENSE:
-                asset.subtractBalance(request.amount());
-                break;
-            case INCOME:
-                asset.plusBalance(request.amount());
-                break;
-            default:
-                throw new CustomException(ErrorCode.AMOUNT_NOT_FOUND);
-        }
+        setBalance(request.type(), asset, request.amount());
 
         transactionRepository.save(transaction);
 
@@ -76,6 +69,15 @@ public class TransactionService {
 
     @Transactional(rollbackFor = Exception.class)
     public TransactionResponse updateTransactionAmount(Long id, TransactionAmountRequest requestAmount, Long userId) {
+        Asset asset = assetRepository.findByIdAndUsername(
+                requestAmount.assetId(),
+                userRepository.findById(userId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND))
+                        .getUsername()
+        ).orElseThrow(() -> new CustomException(ErrorCode.ASSET_NOT_FOUND));
+
+        setBalance(requestAmount.type(), asset, requestAmount.amount());
+
         return TransactionResponse.from(getTransactionByIdAndUserId(id, userId).updateAmount(requestAmount.amount()));
     }
 
@@ -96,5 +98,18 @@ public class TransactionService {
     private Transaction getTransactionByIdAndUserId(Long id, Long userId) {
         return transactionRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
+    }
+
+    private void setBalance(TransactionTypeEnum type, Asset asset, BigDecimal amount) {
+        switch (type) {
+            case EXPENSE:
+                asset.subtractBalance(amount);
+                break;
+            case INCOME:
+                asset.plusBalance(amount);
+                break;
+            default:
+                throw new CustomException(ErrorCode.AMOUNT_NOT_FOUND);
+        }
     }
 }
