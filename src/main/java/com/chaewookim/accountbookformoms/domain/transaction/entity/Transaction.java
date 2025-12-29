@@ -1,6 +1,7 @@
 package com.chaewookim.accountbookformoms.domain.transaction.entity;
 
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import com.chaewookim.accountbookformoms.global.entity.BaseEntity;
 import jakarta.persistence.Column;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
@@ -68,5 +70,26 @@ public class Transaction extends BaseEntity {
                 .isFixed(request.isFix())
                 .repeatDate(request.repeatDate())
                 .build();
+    }
+
+    public static TransactionResponse from(Transaction transaction) {
+        return new TransactionResponse(
+                transaction.getId(),
+                transaction.getTitle(),
+                transaction.getMemo(),
+                transaction.getUserId(),
+                transaction.getAssetId(),
+                transaction.getCategoryId(),
+                transaction.getAmount(),
+                transaction.getType(),
+                transaction.isFixed,
+                transaction.getRepeatDate()
+        );
+    }
+
+    public static List<TransactionResponse> from(List<Transaction> transactions) {
+        return transactions.stream()
+                .map(Transaction::from)
+                .toList();
     }
 }
