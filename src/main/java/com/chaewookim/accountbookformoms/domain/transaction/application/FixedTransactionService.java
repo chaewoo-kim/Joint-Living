@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -34,5 +36,9 @@ public class FixedTransactionService {
         log.info("Created FixedTransaction with id {}", fixedTransaction.getId());
 
         return FixedTransactionResponse.from(fixedTransaction);
+    }
+
+    public List<FixedTransactionResponse> getAllFixedTransactions(Long userId) {
+        return FixedTransactionResponse.from(fixedTransactionRepository.findAllByUserId(userId));
     }
 }

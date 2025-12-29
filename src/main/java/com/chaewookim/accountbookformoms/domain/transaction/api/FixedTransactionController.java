@@ -11,11 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class FixedTransactionController {
 
     private final FixedTransactionService fixedTransactionService;
 
-    @Operation(summary = "고정 수입/고정 지출 추가", description = "고정 수입/고정 지출 추가")
+    @Operation(summary = "고정 수입/고정 지출 추가", description = "고정 수입/고정 지출을 사용자 정보로 추가")
     @PostMapping
     public ResponseEntity<ApiResponse<FixedTransactionResponse>> createFix (
             @RequestBody TransactionFixRequest request,
@@ -33,6 +36,16 @@ public class FixedTransactionController {
         Long userId = user.getUserId();
 
         return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.createFix(request, userId)));
+    }
+
+    @Operation(summary = "고정 수입/고정 지출 조회", description = "사용자가 등록한 고정 수입과 고정 지출 전부 조회")
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<FixedTransactionResponse>>> getFix (
+        @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long userId = user.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.getAllFixedTransactions(userId)));
     }
 
     @Operation(description = "고정 수입/고정 지출 수정")

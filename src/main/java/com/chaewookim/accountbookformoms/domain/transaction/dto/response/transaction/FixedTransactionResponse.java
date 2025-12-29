@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record FixedTransactionResponse(
         @NotNull
@@ -49,5 +50,11 @@ public record FixedTransactionResponse(
                 fixedTransaction.getType(),
                 fixedTransaction.getRepeatDate()
         );
+    }
+
+    public static List<FixedTransactionResponse> from(List<FixedTransaction> fixedTransactions) {
+        return fixedTransactions.stream()
+                .map(FixedTransactionResponse::from)
+                .toList();
     }
 }
