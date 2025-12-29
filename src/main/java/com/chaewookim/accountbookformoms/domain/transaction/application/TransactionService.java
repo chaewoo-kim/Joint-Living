@@ -1,5 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.transaction.application;
 
+import com.chaewookim.accountbookformoms.domain.transaction.api.TransactionMemoRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dao.TransactionRepository;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTitleUpdate;
@@ -38,6 +39,16 @@ public class TransactionService {
                 .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
 
         target.updateTitle(requestTitle.title());
+
+        return TransactionResponse.from(target);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public TransactionResponse updateTransactionMemo(Long id, TransactionMemoRequest requestMemo, Long userId) {
+        Transaction target = transactionRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
+
+        target.updateMemo(requestMemo.memo());
 
         return TransactionResponse.from(target);
     }

@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -93,7 +94,11 @@ public class Transaction extends BaseEntity {
                 .toList();
     }
 
-    public void updateTitle(String title) {
+    public void updateTitle(@NotBlank String title) {
         if (title != null) this.title = title;
+    }
+
+    public void updateMemo(@NotBlank String memo) {
+        if (memo != null) this.memo = memo;
     }
 }

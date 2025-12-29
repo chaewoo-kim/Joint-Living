@@ -63,16 +63,16 @@ public class TransactionController {
         return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionTitle(id, requestTitle, userId)));
     }
 
-    @Operation(description = "수입/지출 금액 수정")
-    @PatchMapping("/update/{id}/{title}")
-    public ResponseEntity<ApiResponse<TransactionResponse>> updateTransactionTitle(
+    @Operation(description = "수입/지출 메모 수정")
+    @PatchMapping("/{id}/memo")
+    public ResponseEntity<ApiResponse<TransactionResponse>> updateTransactionMemo(
             @PathVariable Long id,
-            @PathVariable String title,
+            @RequestBody TransactionMemoRequest requestMemo,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionTitle(id, title, userId)));
+        return ResponseEntity.ok(ApiResponse.success(transactionService.updateTransactionMemo(id, requestMemo, userId)));
     }
 
     @Operation(description = "수입/지출 삭제")
