@@ -95,23 +95,33 @@ public class Transaction extends BaseEntity {
                 .toList();
     }
 
-    public void updateTitle(@NotBlank String title) {
+    public Transaction updateTitle(@NotBlank String title) {
         if (title != null) this.title = title;
+
+        return this;
     }
 
-    public void updateMemo(@NotBlank String memo) {
+    public Transaction updateMemo(@NotBlank String memo) {
         if (memo != null) this.memo = memo;
+
+        return this;
     }
 
-    public void updateAsset(@NotNull Long assetId) {
+    public Transaction updateAsset(@NotNull Long assetId) {
         if (assetId != null) this.assetId = assetId;
+
+        return this;
     }
 
-    public void updateAmount(@NotNull BigDecimal amount) {
+    public Transaction updateAmount(@NotNull BigDecimal amount) {
         if (amount != null) this.amount = amount;
+
+        return this;
     }
 
-    public void updateType(@NotBlank TransactionTypeEnum type) {
+    public Transaction updateType(@NotBlank TransactionTypeEnum type) {
         if (type != null) this.type = type;
+
+        return this;
     }
 }

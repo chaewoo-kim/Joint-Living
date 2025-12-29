@@ -61,52 +61,27 @@ public class TransactionService {
 
     @Transactional(rollbackFor = Exception.class)
     public TransactionResponse updateTransactionTitle(Long id, TransactionTitleUpdate requestTitle, Long userId) {
-        Transaction target = transactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
-
-        target.updateTitle(requestTitle.title());
-
-        return TransactionResponse.from(target);
+        return TransactionResponse.from(getTransactionByIdAndUserId(id, userId).updateTitle(requestTitle.title()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public TransactionResponse updateTransactionMemo(Long id, TransactionMemoRequest requestMemo, Long userId) {
-        Transaction target = transactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
-
-        target.updateMemo(requestMemo.memo());
-
-        return TransactionResponse.from(target);
+        return TransactionResponse.from(getTransactionByIdAndUserId(id, userId).updateMemo(requestMemo.memo()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public TransactionResponse updateTransactionAccount(Long id, TransactionAccountRequest requestAccount, Long userId) {
-        Transaction target = transactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
-
-        target.updateAsset(requestAccount.assetId());
-
-        return TransactionResponse.from(target);
+        return TransactionResponse.from(getTransactionByIdAndUserId(id, userId).updateAsset(requestAccount.assetId()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public TransactionResponse updateTransactionAmount(Long id, TransactionAmountRequest requestAmount, Long userId) {
-        Transaction target = transactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
-
-        target.updateAmount(requestAmount.amount());
-
-        return TransactionResponse.from(target);
+        return TransactionResponse.from(getTransactionByIdAndUserId(id, userId).updateAmount(requestAmount.amount()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public TransactionResponse updateTransactionType(Long id, TransactionTypeRequest requestType, Long userId) {
-        Transaction target = transactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
-
-        target.updateType(requestType.type());
-
-        return TransactionResponse.from(target);
+        return TransactionResponse.from(getTransactionByIdAndUserId(id, userId).updateType(requestType.type()));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -116,5 +91,10 @@ public class TransactionService {
         if (deletedRow == 0) {
             throw new CustomException(ErrorCode.TRANSACTION_NOT_FOUND);
         }
+    }
+
+    private Transaction getTransactionByIdAndUserId(Long id, Long userId) {
+        return transactionRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
     }
 }
