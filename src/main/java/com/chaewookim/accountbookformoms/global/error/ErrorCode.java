@@ -42,7 +42,10 @@ public enum ErrorCode {
     ACCOUNT_ACCESS_DENIED(HttpStatus.UNAUTHORIZED, "본인의 계좌만 삭제할 수 있습니다."),
 
     // 해당 트랜잭션 찾지 못 함
-    TRANSACTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 내역을 찾을 수 없거나 접근 권한이 없습니다.");
+    TRANSACTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 내역을 찾을 수 없거나 접근 권한이 없습니다."),
+
+    // 고정 트랜잭션 존재하지 않음
+    NO_FIXED_TRANSACTIONS(HttpStatus.NOT_FOUND, "고정수입 또는 고정지출을 찾을 수 없거나 접근 권한이 없습니다.");
 
     private final HttpStatus status;
     private final String message;

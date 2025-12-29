@@ -1,13 +1,13 @@
 package com.chaewookim.accountbookformoms.domain.transaction.application;
 
-import com.chaewookim.accountbookformoms.domain.transaction.api.TransactionMemoRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionMemoRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dao.TransactionRepository;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionAccountRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionAmountRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTitleUpdate;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionTypeRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionAccountRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionAmountRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionTitleUpdate;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionTypeRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.Transaction;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import com.chaewookim.accountbookformoms.global.error.CustomException;

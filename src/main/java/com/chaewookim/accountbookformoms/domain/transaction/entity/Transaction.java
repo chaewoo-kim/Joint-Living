@@ -1,7 +1,7 @@
 package com.chaewookim.accountbookformoms.domain.transaction.entity;
 
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.TransactionRequest;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import com.chaewookim.accountbookformoms.global.entity.BaseEntity;
 import jakarta.persistence.Column;

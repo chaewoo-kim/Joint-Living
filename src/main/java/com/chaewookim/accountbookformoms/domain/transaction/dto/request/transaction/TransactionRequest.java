@@ -1,4 +1,4 @@
-package com.chaewookim.accountbookformoms.domain.transaction.dto.request;
+package com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction;
 
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import jakarta.validation.constraints.NotBlank;
@@ -8,10 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record TransactionUpdateRequest(
-        @NotNull
-        Long id,
-
+public record TransactionRequest(
         @NotBlank
         String title,
 
