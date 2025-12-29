@@ -33,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class FixedTransactionServiceTests {
@@ -336,6 +338,30 @@ class FixedTransactionServiceTests {
 
         // when & then
         CustomException exception = assertThrows(CustomException.class, () -> fixedTransactionService.updateFix(fixedTransactionTypeUpdate, userId, fixedTransactionId));
+        assertEquals(ErrorCode.NO_FIXED_TRANSACTIONS, exception.getErrorCode());
+    }
+
+
+    @Test
+    @DisplayName("고정 트랜잭션 삭제 - 성공")
+    void deleteFixedTransaction_Success() {
+        // given
+        given(fixedTransactionRepository.deleteByIdAndUserId(fixedTransactionId, userId)).willReturn(1L);
+
+        // when
+        fixedTransactionService.deleteFix(fixedTransactionId, userId);
+
+        // then
+        verify(fixedTransactionRepository, times(1)).deleteByIdAndUserId(fixedTransactionId, userId);
+    }
+    @Test
+    @DisplayName("고정 트랜잭션 삭제 - 실패 - 삭제할 행이 없음")
+    void deleteFixedTransaction_Failure() {
+        // given
+        given(fixedTransactionRepository.deleteByIdAndUserId(fixedTransactionId, userId)).willReturn(0L);
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () -> fixedTransactionService.deleteFix(fixedTransactionId, userId));
         assertEquals(ErrorCode.NO_FIXED_TRANSACTIONS, exception.getErrorCode());
     }
 }
