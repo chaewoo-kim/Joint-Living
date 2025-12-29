@@ -55,43 +55,57 @@ public class FixedTransaction extends BaseEntity {
 
     private LocalDateTime repeatDate;
 
-    public void updateTitle(@NotBlank String title) {
+    public FixedTransaction updateTitle(@NotBlank String title) {
         if (title != null && !title.isEmpty()) {
             this.title = title;
         }
+
+        return this;
     }
 
-    public void updateMemo(String memo) {
+    public FixedTransaction updateMemo(String memo) {
         this.memo = memo;
+
+        return this;
     }
 
-    public void updateAsset(@NotNull Long assetId) {
+    public FixedTransaction updateAsset(@NotNull Long assetId) {
         if (assetId != null && assetId != 0) {
             this.assetId = assetId;
         }
+
+        return this;
     }
 
-    public void updateType(@NotNull TransactionTypeEnum type) {
+    public FixedTransaction updateType(@NotNull TransactionTypeEnum type) {
         if (type != null) {
             this.type = type;
         }
+
+        return this;
     }
 
-    public void updateAmount(@NotNull BigDecimal amount) {
+    public FixedTransaction updateAmount(@NotNull BigDecimal amount) {
         if (amount != null) {
             this.amount = amount;
         }
+
+        return this;
     }
 
-    public void updateCategory(@NotNull Long categoryId) {
+    public FixedTransaction updateCategory(@NotNull Long categoryId) {
         if (categoryId != null && categoryId != 0) {
             this.categoryId = categoryId;
         }
+
+        return this;
     }
 
-    public void updateRepeatDate(@NotNull LocalDateTime date) {
+    public FixedTransaction updateRepeatDate(@NotNull LocalDateTime date) {
         if (date != null) {
             this.repeatDate = date;
         }
+
+        return this;
     }
 }

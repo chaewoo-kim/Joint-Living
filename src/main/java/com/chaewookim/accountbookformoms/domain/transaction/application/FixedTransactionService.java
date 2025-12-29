@@ -61,71 +61,41 @@ public class FixedTransactionService {
 
     @Transactional(rollbackFor = Exception.class)
     public FixedTransactionResponse updateFix(FixedTransactionTitleUpdate request, Long userId, Long id) {
-        FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
-
-        fixedTransaction.updateTitle(request.title());
-
-        return FixedTransactionResponse.from(fixedTransaction);
+        return FixedTransactionResponse.from(getFixedTransactionByIdAndUserId(id, userId).updateTitle(request.title()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public FixedTransactionResponse updateFix(FixedTransactionMemoUpdate request, Long userId, Long id) {
-        FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
-
-        fixedTransaction.updateMemo(request.memo());
-
-        return FixedTransactionResponse.from(fixedTransaction);
+        return FixedTransactionResponse.from(getFixedTransactionByIdAndUserId(id, userId).updateMemo(request.memo()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public FixedTransactionResponse updateFix(FixedTransactionAccountUpdate request, Long userId, Long id) {
-        FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
-
-        fixedTransaction.updateAsset(request.accountId());
-
-        return FixedTransactionResponse.from(fixedTransaction);
+        return FixedTransactionResponse.from(getFixedTransactionByIdAndUserId(id, userId).updateAsset(request.accountId()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public FixedTransactionResponse updateFix(FixedTransactionCategoryUpdate request, Long userId, Long id) {
-        FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
-
-        fixedTransaction.updateCategory(request.categoryId());
-
-        return FixedTransactionResponse.from(fixedTransaction);
+        return FixedTransactionResponse.from(getFixedTransactionByIdAndUserId(id, userId).updateCategory(request.categoryId()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public FixedTransactionResponse updateFix(FixedTransactionAmountUpdate request, Long userId, Long id) {
-        FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
-
-        fixedTransaction.updateAmount(request.amount());
-
-        return FixedTransactionResponse.from(fixedTransaction);
+        return FixedTransactionResponse.from(getFixedTransactionByIdAndUserId(id, userId).updateAmount(request.amount()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public FixedTransactionResponse updateFix(FixedTransactionRepeatDateUpdate request, Long userId, Long id) {
-        FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
-
-        fixedTransaction.updateRepeatDate(request.date());
-
-        return FixedTransactionResponse.from(fixedTransaction);
+        return FixedTransactionResponse.from(getFixedTransactionByIdAndUserId(id, userId).updateRepeatDate(request.date()));
     }
 
     @Transactional(rollbackFor = Exception.class)
     public FixedTransactionResponse updateFix(FixedTransactionTypeUpdate request, Long userId, Long id) {
-        FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
+        return FixedTransactionResponse.from(getFixedTransactionByIdAndUserId(id, userId).updateType(request.type()));
+    }
+
+    private FixedTransaction getFixedTransactionByIdAndUserId(Long id, Long userId) {
+        return fixedTransactionRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
-
-        fixedTransaction.updateType(request.type());
-
-        return FixedTransactionResponse.from(fixedTransaction);
     }
 }

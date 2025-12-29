@@ -1,6 +1,7 @@
 package com.chaewookim.accountbookformoms.domain.transaction.application;
 
 import com.chaewookim.accountbookformoms.domain.transaction.dao.FixedTransactionRepository;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionMemoUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionTitleUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.FixedTransactionResponse;
@@ -45,6 +46,7 @@ class FixedTransactionServiceTests {
     private FixedTransaction fixedTransaction;
     private FixedTransactionRequest fixedTransactionRequest;
     private FixedTransactionTitleUpdate  fixedTransactionTitleUpdate;
+    private FixedTransactionMemoUpdate fixedTransactionMemoUpdate;
 
     @BeforeEach
     void setUp() {
@@ -80,6 +82,10 @@ class FixedTransactionServiceTests {
 
         fixedTransactionTitleUpdate = new FixedTransactionTitleUpdate(
                 "updateTitle"
+        );
+
+        fixedTransactionMemoUpdate = new FixedTransactionMemoUpdate(
+                "updateMemo"
         );
     }
 
