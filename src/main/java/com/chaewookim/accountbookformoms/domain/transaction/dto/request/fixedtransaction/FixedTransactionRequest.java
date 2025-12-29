@@ -1,4 +1,4 @@
-package com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction;
+package com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction;
 
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record TransactionFixRequest (
+public record FixedTransactionRequest(
         @NotBlank
         String title,
 

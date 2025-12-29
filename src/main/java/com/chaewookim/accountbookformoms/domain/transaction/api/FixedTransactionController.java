@@ -1,7 +1,8 @@
 package com.chaewookim.accountbookformoms.domain.transaction.api;
 
 import com.chaewookim.accountbookformoms.domain.transaction.application.FixedTransactionService;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionFixRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionTitleUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.FixedTransactionResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
@@ -30,7 +31,7 @@ public class FixedTransactionController {
     @Operation(summary = "고정 수입/고정 지출 추가", description = "고정 수입/고정 지출을 사용자 정보로 추가")
     @PostMapping
     public ResponseEntity<ApiResponse<FixedTransactionResponse>> createFix (
-            @RequestBody TransactionFixRequest request,
+            @RequestBody FixedTransactionRequest request,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         Long userId = user.getUserId();
@@ -48,16 +49,16 @@ public class FixedTransactionController {
         return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.getAllFixedTransactions(userId)));
     }
 
-    @Operation(description = "고정 수입/고정 지출 수정")
-    @PatchMapping
-    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFix (
-            @RequestBody TransactionFixRequest request,
+    @Operation(summary = "고정 수입/고정 지출 타이틀 수정", description = "고정 수입/고정 지출에 대한 타이틀(제목) 수정")
+    @PatchMapping("{id}/title")
+    public ResponseEntity<ApiResponse<FixedTransactionResponse>> updateFixedTransactionTitle (
+            @PathVariable Long id,
+            @RequestBody FixedTransactionTitleUpdate request,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         Long userId = user.getUserId();
 
-        return ResponseEntity.ok(ApiResponse.success(null));
-//        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId)));
+        return ResponseEntity.ok(ApiResponse.success(fixedTransactionService.updateFix(request, userId, id)));
     }
 
     @Operation(description = "고정 수입/고정 지출 삭제")

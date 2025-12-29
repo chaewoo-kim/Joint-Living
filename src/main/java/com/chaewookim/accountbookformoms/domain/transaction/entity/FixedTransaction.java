@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,4 +53,10 @@ public class FixedTransaction extends BaseEntity {
     private TransactionTypeEnum type;
 
     private LocalDateTime repeatDate;
+
+    public void updateTitle(@NotBlank String title) {
+        if (title != null && !title.isEmpty()) {
+            this.title = title;
+        }
+    }
 }

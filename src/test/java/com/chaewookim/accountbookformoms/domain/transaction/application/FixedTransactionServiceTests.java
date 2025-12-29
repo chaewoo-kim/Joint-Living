@@ -1,7 +1,7 @@
 package com.chaewookim.accountbookformoms.domain.transaction.application;
 
 import com.chaewookim.accountbookformoms.domain.transaction.dao.FixedTransactionRepository;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionFixRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.FixedTransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.FixedTransaction;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
@@ -37,7 +37,7 @@ class FixedTransactionServiceTests {
     BigDecimal amount;
 
     private FixedTransaction fixedTransaction;
-    private TransactionFixRequest transactionFixRequest;
+    private FixedTransactionRequest fixedTransactionRequest;
 
     @BeforeEach
     void setUp() {
@@ -60,7 +60,7 @@ class FixedTransactionServiceTests {
                 .build();
         ReflectionTestUtils.setField(fixedTransaction, "id", fixedTransactionId);
 
-        transactionFixRequest = new TransactionFixRequest(
+        fixedTransactionRequest = new FixedTransactionRequest(
                 "reqTitle",
                 "reqMemo",
                 userId,
@@ -76,7 +76,7 @@ class FixedTransactionServiceTests {
     @DisplayName("고정지출 추가 - 성공")
     void createFixedExpense_Success() {
         // when
-        FixedTransactionResponse response = fixedTransactionService.createFix(transactionFixRequest, userId);
+        FixedTransactionResponse response = fixedTransactionService.createFix(fixedTransactionRequest, userId);
 
         // then
         assertNotNull(response);

@@ -1,9 +1,12 @@
 package com.chaewookim.accountbookformoms.domain.transaction.application;
 
 import com.chaewookim.accountbookformoms.domain.transaction.dao.FixedTransactionRepository;
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionFixRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.fixedtransaction.FixedTransactionTitleUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.FixedTransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.FixedTransaction;
+import com.chaewookim.accountbookformoms.global.error.CustomException;
+import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,7 @@ public class FixedTransactionService {
     private final FixedTransactionRepository fixedTransactionRepository;
 
     @Transactional(rollbackFor = Exception.class)
-    public FixedTransactionResponse createFix(TransactionFixRequest request, Long userId) {
+    public FixedTransactionResponse createFix(FixedTransactionRequest request, Long userId) {
         FixedTransaction fixedTransaction = FixedTransaction.builder()
                 .title(request.title())
                 .memo(request.memo())
@@ -40,5 +43,14 @@ public class FixedTransactionService {
 
     public List<FixedTransactionResponse> getAllFixedTransactions(Long userId) {
         return FixedTransactionResponse.from(fixedTransactionRepository.findAllByUserId(userId));
+    }
+
+    public FixedTransactionResponse updateFix(FixedTransactionTitleUpdate request, Long userId, Long id) {
+        FixedTransaction fixedTransaction = fixedTransactionRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.TRANSACTION_NOT_FOUND));
+
+        fixedTransaction.updateTitle(request.title());
+
+        return FixedTransactionResponse.from(fixedTransaction);
     }
 }
