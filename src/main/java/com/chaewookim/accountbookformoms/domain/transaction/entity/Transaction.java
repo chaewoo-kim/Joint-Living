@@ -46,7 +46,7 @@ public class Transaction extends BaseEntity {
     @Column(nullable = false)
     private Long categoryId;
 
-    @Column(nullable = false, precision = 12, scale = 4)
+    @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal amount;
 
     @Column(nullable = false)
