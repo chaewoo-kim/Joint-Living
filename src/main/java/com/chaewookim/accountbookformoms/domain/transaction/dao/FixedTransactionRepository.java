@@ -12,4 +12,6 @@ public interface FixedTransactionRepository extends JpaRepository<FixedTransacti
     List<FixedTransaction> findAllByUserId(Long userId);
 
     Optional<FixedTransaction> findByIdAndUserId(Long id, Long userId);
+
+    Long deleteByIdAndUserId(Long id, Long userId);
 }

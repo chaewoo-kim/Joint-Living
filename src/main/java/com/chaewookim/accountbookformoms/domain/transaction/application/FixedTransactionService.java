@@ -98,4 +98,13 @@ public class FixedTransactionService {
         return fixedTransactionRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS));
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteFix(Long id, Long userId) {
+        Long result = fixedTransactionRepository.deleteByIdAndUserId(id, userId);
+
+        if (result == 0) {
+            throw new CustomException(ErrorCode.NO_FIXED_TRANSACTIONS);
+        }
+    }
 }

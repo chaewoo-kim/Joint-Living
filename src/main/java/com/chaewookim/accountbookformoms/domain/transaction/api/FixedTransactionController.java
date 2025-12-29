@@ -142,15 +142,13 @@ public class FixedTransactionController {
     @Operation(description = "고정 수입/고정 지출 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<String>> deleteFix (
-            @PathVariable String id,
+            @PathVariable Long id,
             @AuthenticationPrincipal CustomUserDetails user
     ) {
         Long userId = user.getUserId();
-        Long transactionId = Long.parseLong(id);
 
-//        fixedTransactionService.deleteFix(transactionId, userId);
+        fixedTransactionService.deleteFix(id, userId);
 
-        return ResponseEntity.ok(ApiResponse.success(null));
-//        return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
+        return ResponseEntity.ok(ApiResponse.success("삭제 완료"));
     }
 }
