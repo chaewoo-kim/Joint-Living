@@ -88,6 +88,10 @@ public class TransactionService {
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteTransaction(Long id, Long userId) {
-        transactionRepository.deleteByIdAndUserId(id, userId);
+        Long deletedRow = transactionRepository.deleteByIdAndUserId(id, userId);
+
+        if (deletedRow == 0) {
+            throw new CustomException(ErrorCode.TRANSACTION_NOT_FOUND);
+        }
     }
 }

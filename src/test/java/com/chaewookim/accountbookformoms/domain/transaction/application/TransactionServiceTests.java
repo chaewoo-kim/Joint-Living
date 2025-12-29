@@ -10,6 +10,8 @@ import com.chaewookim.accountbookformoms.domain.transaction.dto.request.Transact
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.Transaction;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
+import com.chaewookim.accountbookformoms.global.error.CustomException;
+import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,9 +22,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTests {
@@ -89,7 +97,7 @@ class TransactionServiceTests {
         );
 
         requestType =  new TransactionTypeRequest(
-                TransactionTypeEnum.INCOME
+                TransactionTypeEnum.EXPENSE
         );
 
         transaction = Transaction.builder()
@@ -117,5 +125,200 @@ class TransactionServiceTests {
         assertEquals(userId, response.userId());
         assertEquals(assetId, response.assetId());
         assertEquals("reqTitle", response.title());
+    }
+
+
+    @Test
+    @DisplayName("트랜잭션 전체 조회 - 성공")
+    void getAllTransaction_Success() {
+        // given
+        given(transactionRepository.findAllByUserId(userId)).willReturn(List.of(transaction));
+
+        // when
+        List<TransactionResponse> responses = transactionService.getAllTransactions(userId);
+
+        // then
+        assertNotNull(responses);
+
+        assertEquals(1, responses.size());
+
+        assertEquals("title", responses.get(0).title());
+    }
+
+
+    @Test
+    @DisplayName("트랜잭션 타이틀 수정 - 성공")
+    void updateTransactionTitle_Success() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.of(transaction));
+
+        // when
+        TransactionResponse response = transactionService.updateTransactionTitle(transactionId, requestTitle, userId);
+
+        // then
+        assertNotNull(response);
+
+        assertEquals("newTitle", response.title());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+    @Test
+    @DisplayName("트랜잭션 타이틀 수정 - 실패 - TRANSACTION_NOT_FOUND")
+    void updateTransactionTitle_Failure() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.empty());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () ->
+                transactionService.updateTransactionTitle(transactionId, requestTitle, userId));
+
+        assertEquals(ErrorCode.TRANSACTION_NOT_FOUND, exception.getErrorCode());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+
+
+    @Test
+    @DisplayName("트랜잭션 메모 수정 - 성공")
+    void updateTransactionMemo_Success() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.of(transaction));
+
+        // when
+        TransactionResponse response = transactionService.updateTransactionMemo(transactionId, requestMemo, userId);
+
+        // then
+        assertNotNull(response);
+
+        assertEquals("newMemo", response.memo());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+    @Test
+    @DisplayName("트랜잭션 메모 수정 - 실패 - TRANSACTION_NOT_FOUND")
+    void updateTransactionMemo_Failure() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.empty());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () ->
+                transactionService.updateTransactionMemo(transactionId, requestMemo, userId));
+
+        assertEquals(ErrorCode.TRANSACTION_NOT_FOUND, exception.getErrorCode());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+
+
+    @Test
+    @DisplayName("트랜잭션 계좌 수정 - 성공")
+    void updateTransactionAccount_Success() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.of(transaction));
+
+        // when
+        TransactionResponse response = transactionService.updateTransactionAccount(transactionId, requestAccount, userId);
+
+        // then
+        assertNotNull(response);
+
+        assertEquals(newAssetId, response.assetId());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+    @Test
+    @DisplayName("트랜잭션 계좌 수정 - 실패 - TRANSACTION_NOT_FOUND")
+    void updateTransactionAccount_Failure() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.empty());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () ->
+                transactionService.updateTransactionAccount(transactionId, requestAccount, userId));
+
+        assertEquals(ErrorCode.TRANSACTION_NOT_FOUND, exception.getErrorCode());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+
+
+    @Test
+    @DisplayName("트랜잭션 금액 수정 - 성공")
+    void updateTransactionAmount_Success() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.of(transaction));
+
+        // when
+        TransactionResponse response = transactionService.updateTransactionAmount(transactionId, requestAmount, userId);
+
+        // then
+        assertNotNull(response);
+
+        assertEquals(newAmount, response.amount());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+    @Test
+    @DisplayName("트랜잭션 금액 수정 - 실패 - TRANSACTION_NOT_FOUND")
+    void updateTransactionAmount_Failure() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.empty());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () ->
+                transactionService.updateTransactionAmount(transactionId, requestAmount, userId));
+
+        assertEquals(ErrorCode.TRANSACTION_NOT_FOUND, exception.getErrorCode());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+
+
+    @Test
+    @DisplayName("트랜잭션 타입 수정 - 성공")
+    void updateTransactionType_Success() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.of(transaction));
+
+        // when
+        TransactionResponse response = transactionService.updateTransactionType(transactionId, requestType, userId);
+
+        // then
+        assertNotNull(response);
+
+        assertEquals(TransactionTypeEnum.EXPENSE, response.type());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+    @Test
+    @DisplayName("트랜잭션 타입 수정 - 실패 - TRANSACTION_NOT_FOUND")
+    void updateTransactionType_Failure() {
+        // given
+        given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.empty());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class, () ->
+                transactionService.updateTransactionType(transactionId, requestType, userId));
+
+        assertEquals(ErrorCode.TRANSACTION_NOT_FOUND, exception.getErrorCode());
+        verify(transactionRepository, times(1)).findByIdAndUserId(transactionId, userId);
+    }
+
+
+    @Test
+    @DisplayName("트랜잭션 삭제 - 성공")
+    void deleteTransaction_Success() {
+        // given
+        given(transactionRepository.deleteByIdAndUserId(transactionId, userId)).willReturn(1L);
+
+        // when
+        transactionService.deleteTransaction(transactionId, userId);
+
+        // then
+        verify(transactionRepository, times(1)).deleteByIdAndUserId(transactionId, userId);
+    }
+    @Test
+    @DisplayName("트랜잭션 삭제 - 실패")
+    void deleteTransaction_Failure() {
+        // given
+        given(transactionRepository.deleteByIdAndUserId(transactionId, userId)).willReturn(0L);
+
+        // then
+        CustomException exception = assertThrows(CustomException.class, () ->
+                transactionService.deleteTransaction(transactionId, userId));
+        assertEquals(ErrorCode.TRANSACTION_NOT_FOUND, exception.getErrorCode());
+
+        verify(transactionRepository, times(1)).deleteByIdAndUserId(transactionId, userId);
     }
 }
