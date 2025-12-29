@@ -88,8 +88,8 @@ public class JwtTokenProvider {
 
         String username = claims.getSubject();
         String email = claims.get("email", String.class);
-        String role = claims.get("role", String.class);
-
+        String role = claims.get("auth", String.class);
+        log.info("username = {}, email = {}, role = {}", username, email, role);
         Number userIdNum = claims.get("userId", Long.class);
         Long userId = (userIdNum == null) ? null : userIdNum.longValue();
 
@@ -109,7 +109,7 @@ public class JwtTokenProvider {
                 username,
                 "",
                 email,
-                UserRole.valueOf(role)
+                UserRole.findByKey(role)
         );
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
