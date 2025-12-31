@@ -1,15 +1,20 @@
 package com.chaewookim.accountbookformoms.domain.transaction.application;
 
-import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionMemoRequest;
+import com.chaewookim.accountbookformoms.domain.asset.dao.AssetRepository;
+import com.chaewookim.accountbookformoms.domain.asset.entity.Asset;
+import com.chaewookim.accountbookformoms.domain.asset.entity.BankEnum;
 import com.chaewookim.accountbookformoms.domain.transaction.dao.TransactionRepository;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionAccountRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionAmountRequest;
+import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionMemoRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionTitleUpdate;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.request.transaction.TransactionTypeRequest;
 import com.chaewookim.accountbookformoms.domain.transaction.dto.response.transaction.TransactionResponse;
 import com.chaewookim.accountbookformoms.domain.transaction.entity.Transaction;
 import com.chaewookim.accountbookformoms.domain.transaction.enums.TransactionTypeEnum;
+import com.chaewookim.accountbookformoms.domain.user.dao.UserRepository;
+import com.chaewookim.accountbookformoms.domain.user.domain.User;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
 import com.chaewookim.accountbookformoms.global.error.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +46,14 @@ class TransactionServiceTests {
     @Mock
     private TransactionRepository transactionRepository;
 
+    @Mock
+    private AssetRepository assetRepository;
+
+    @Mock
+    private UserRepository userRepository;
+
+    String username;
+
     Long userId;
     Long assetId;
     Long newAssetId;
@@ -57,8 +71,13 @@ class TransactionServiceTests {
     private TransactionTypeRequest requestType;
     private Transaction transaction;
 
+    private User user;
+    private Asset asset;
+
     @BeforeEach
     void setUp() {
+        username = "username";
+
         userId = 1L;
         assetId = 10L;
         newAssetId = 11L;
@@ -77,7 +96,8 @@ class TransactionServiceTests {
                 BigDecimal.valueOf(30000),
                 TransactionTypeEnum.EXPENSE,
                 false,
-                null
+                null,
+                LocalDateTime.now()
         );
 
         requestTitle =  new TransactionTitleUpdate(
@@ -93,7 +113,9 @@ class TransactionServiceTests {
         );
 
         requestAmount =   new TransactionAmountRequest(
-                newAmount
+                newAmount,
+                TransactionTypeEnum.EXPENSE,
+                assetId
         );
 
         requestType =  new TransactionTypeRequest(
@@ -111,11 +133,29 @@ class TransactionServiceTests {
                 .isFixed(false)
                 .build();
         ReflectionTestUtils.setField(transaction, "id", transactionId);
+
+        user = User.builder()
+                .username(username)
+                .build();
+        ReflectionTestUtils.setField(user, "id", userId);
+
+        asset = Asset.builder()
+                .bank(BankEnum.KB)
+                .accountNumber("1234")
+                .balance(amount)
+                .username(username)
+                .build();
+        ReflectionTestUtils.setField(asset, "id", assetId);
     }
 
     @Test
     @DisplayName("트랜잭션 생성 - 성공")
     void createTransaction() {
+        // given
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
+        given(assetRepository.findByIdAndUsername(assetId, username)).willReturn(Optional.of(asset));
+
         // when
         TransactionResponse response = transactionService.createTransaction(transactionRequest, userId);
 
@@ -240,6 +280,10 @@ class TransactionServiceTests {
     @DisplayName("트랜잭션 금액 수정 - 성공")
     void updateTransactionAmount_Success() {
         // given
+        given(assetRepository.findByIdAndUsername(assetId, username)).willReturn(Optional.of(asset));
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
         given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.of(transaction));
 
         // when
@@ -255,6 +299,10 @@ class TransactionServiceTests {
     @DisplayName("트랜잭션 금액 수정 - 실패 - TRANSACTION_NOT_FOUND")
     void updateTransactionAmount_Failure() {
         // given
+        given(assetRepository.findByIdAndUsername(assetId, username)).willReturn(Optional.of(asset));
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+
         given(transactionRepository.findByIdAndUserId(transactionId, userId)).willReturn(Optional.empty());
 
         // when & then

@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,7 +40,7 @@ public class Asset extends BaseEntity {
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal balance = BigDecimal.ZERO;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Builder
@@ -49,14 +51,28 @@ public class Asset extends BaseEntity {
         this.username = username;
     }
 
-    public Asset updateBalance(BigDecimal newBalance) {
-        this.balance = newBalance;
+    public void subtractBalance(@NotNull @Size(min = 1) BigDecimal amount) {
+        if (amount != null) {
+            this.balance = this.balance.subtract(amount);
+        }
+    }
 
-        return this;
+    public void plusBalance(@NotNull @Size(min = 1) BigDecimal amount) {
+        if (amount != null) {
+            this.balance = this.balance.add(amount);
+        }
     }
 
     public Asset updateUsername(String username) {
         this.username = username;
+
+        return this;
+    }
+
+    public Asset updateBalance(@NotNull BigDecimal balance) {
+        if (balance != null) {
+            this.balance = balance;
+        }
 
         return this;
     }

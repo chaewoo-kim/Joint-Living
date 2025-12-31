@@ -38,8 +38,8 @@ class AssetTest {
 
     @Test
     @DisplayName("Asset 객체 생성 후 updateBalance 정상 작동 확인")
-    void createAsset_UpdateBalance() {
-        asset.updateBalance(BigDecimal.TEN);
+    void createAsset_subtractBalance() {
+        asset.subtractBalance(BigDecimal.TEN);
 
         assertEquals(asset.getBalance(), BigDecimal.TEN);
     }
