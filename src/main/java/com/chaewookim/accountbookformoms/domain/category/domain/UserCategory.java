@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserCategory extends BaseEntity {
@@ -25,38 +26,15 @@ public class UserCategory extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
+    @Builder.Default
     @Column(nullable = false, unique = true)
-    private String categoryName;
+    private String categoryName = "기본 이름";
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isInterested = false;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isIncome = false;   // income or expense
-
-    @Builder
-    public UserCategory(Long userId, String categoryName, boolean isInterested, boolean isIncome) {
-        this.userId = userId;
-        this.categoryName = categoryName;
-        this.isInterested = isInterested;
-        this.isIncome = isIncome;
-    }
-
-    public UserCategory updateCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-
-        return this;
-    }
-
-    public UserCategory updateIsInterested(boolean isInterested) {
-        this.isInterested = isInterested;
-
-        return this;
-    }
-
-    public UserCategory updateIsIncome(boolean isIncome) {
-        this.isIncome = isIncome;
-
-        return this;
-    }
 }
