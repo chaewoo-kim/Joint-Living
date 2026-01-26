@@ -12,12 +12,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Tag(name = "계좌", description = "계좌 등록/계좌 조회/계좌 삭제/계좌 잔고 입력 및 수정 API")
 @RestController
@@ -26,6 +29,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
 
     private final CategoryService categoryService;
+
+    @Operation(summary = "사용자 카테고리 조회", description = "기존 카테고리가 아닌 사용자가 생성한 카테고리들 조회")
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<UserCreatedCategoryResponse>>> getAllUserCreatedCategories(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getUserId();
+
+        return ResponseEntity.ok(ApiResponse.success(categoryService.getAllUserCreatedCategories(userId)));
+    }
 
     @Operation(summary = "사용자 카테고리 생성", description = "기존 카테고리가 아닌 사용자가 이름을 지정한 카테고리 생성")
     @PostMapping

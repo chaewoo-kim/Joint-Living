@@ -1,5 +1,6 @@
 package com.chaewookim.accountbookformoms.domain.category.domain;
 
+import com.chaewookim.accountbookformoms.domain.category.dto.request.UserCategoryCreateRequest;
 import com.chaewookim.accountbookformoms.global.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,19 +29,28 @@ public class UserCategory extends BaseEntity {
 
     @Builder.Default
     @Column(nullable = false, unique = true)
-    private String categoryName = "기본 이름";
+    private String title = "기본 이름";
 
     @Builder.Default
     @Column(nullable = false)
-    private boolean isInterested = false;
+    private Boolean isInterested = false;
 
     @Builder.Default
     @Column(nullable = false)
-    private boolean isIncome = false;   // income or expense
+    private Boolean isIncome = false;   // income or expense
 
     public static UserCategory create(Long userId) {
         return UserCategory.builder()
                 .userId(userId)
+                .build();
+    }
+
+    public static UserCategory create(Long userId, UserCategoryCreateRequest request) {
+        return UserCategory.builder()
+                .userId(userId)
+                .title(request.title())
+                .isInterested(request.isInterested())
+                .isIncome(request.isIncome())
                 .build();
     }
 }
