@@ -52,6 +52,16 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public GroupedOpenApi categoryGroup() {
+        return GroupedOpenApi.builder()
+                .group("Category API")
+                .pathsToMatch(
+                        "/api/v1/categories/**"
+                )
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi allGroup() {
         return GroupedOpenApi.builder()
                 .group("전체 API")
