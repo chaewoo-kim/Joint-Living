@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CategoryService {
 
-    private final UserCategoryRepository categoryRepository;
+    private final UserCategoryRepository userCategoryRepository;
 
     public UserCreatedCategoryResponse createUserCategory(Long userId, UserCategoryCreateRequest request) {
 
@@ -31,6 +31,6 @@ public class CategoryService {
 
     @Transactional
     public void createDefaultCategory(@NotNull Long userId) {
-        categoryRepository.save(UserCategory.builder().userId(userId).build());
+        userCategoryRepository.save(UserCategory.create(userId));
     }
 }

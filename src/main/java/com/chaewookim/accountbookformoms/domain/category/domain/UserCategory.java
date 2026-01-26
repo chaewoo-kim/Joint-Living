@@ -37,4 +37,10 @@ public class UserCategory extends BaseEntity {
     @Builder.Default
     @Column(nullable = false)
     private boolean isIncome = false;   // income or expense
+
+    public static UserCategory create(Long userId) {
+        return UserCategory.builder()
+                .userId(userId)
+                .build();
+    }
 }
