@@ -44,9 +44,9 @@ public class UserService {
                 .address(request.address())
                 .build();
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
-        eventPublisher.publishEvent(new UserSignedUpEvent(user));
+        eventPublisher.publishEvent(new UserSignedUpEvent(savedUser.getId()));
 
         return userRepository.findByEmail(request.email()).orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)).getId();

@@ -1,6 +1,8 @@
 package com.chaewookim.accountbookformoms.global.event;
 
-import com.chaewookim.accountbookformoms.domain.user.domain.User;
+import jakarta.validation.constraints.NotNull;
 
-public record UserSignedUpEvent(User user) {
-}
+public record UserSignedUpEvent(
+        @NotNull
+        Long userId
+) {}
