@@ -1,4 +1,4 @@
-package com.chaewookim.accountbookformoms.domain.asset.entity;
+package com.chaewookim.accountbookformoms.domain.category.domain;
 
 import com.chaewookim.accountbookformoms.global.entity.BaseEntity;
 import jakarta.persistence.Column;

@@ -8,8 +8,10 @@ import com.chaewookim.accountbookformoms.domain.user.dto.request.UpdateRequest;
 import com.chaewookim.accountbookformoms.domain.user.dto.request.WithdrawRequest;
 import com.chaewookim.accountbookformoms.global.error.CustomException;
 import com.chaewookim.accountbookformoms.global.error.ErrorCode;
+import com.chaewookim.accountbookformoms.global.event.UserSignedUpEvent;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Long signUp(SignUpRequest request) {
@@ -41,6 +45,8 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+
+        eventPublisher.publishEvent(new UserSignedUpEvent(user));
 
         return userRepository.findByEmail(request.email()).orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)).getId();
