@@ -3,6 +3,7 @@ package com.chaewookim.accountbookformoms.domain.category.application;
 import com.chaewookim.accountbookformoms.domain.category.dao.UserCategoryRepository;
 import com.chaewookim.accountbookformoms.domain.category.domain.UserCategory;
 import com.chaewookim.accountbookformoms.domain.category.dto.request.UserCategoryCreateRequest;
+import com.chaewookim.accountbookformoms.domain.category.dto.response.UserCategoryResponse;
 import com.chaewookim.accountbookformoms.domain.category.dto.response.UserCreatedCategoryResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,11 @@ public class CategoryService {
 
     private final UserCategoryRepository userCategoryRepository;
 
-    public List<UserCreatedCategoryResponse> getAllUserCreatedCategories(Long userId) {
+    public List<UserCategoryResponse> getAllUserCreatedCategories(Long userId) {
         // 사용자 카테고리 조회
         List<UserCategory> userCategories = userCategoryRepository.findAllByUserId(userId);
 
-        return UserCreatedCategoryResponse.from(userCategories);
+        return UserCategoryResponse.from(userCategories);
     }
 
     @Transactional(rollbackFor = Exception.class)

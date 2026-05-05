@@ -3,6 +3,7 @@ package com.chaewookim.accountbookformoms.domain.category.api;
 import com.chaewookim.accountbookformoms.domain.category.application.CategoryService;
 import com.chaewookim.accountbookformoms.domain.category.dto.request.UserCategoryCreateRequest;
 import com.chaewookim.accountbookformoms.domain.category.dto.request.UserCategoryUpdateRequest;
+import com.chaewookim.accountbookformoms.domain.category.dto.response.UserCategoryResponse;
 import com.chaewookim.accountbookformoms.domain.category.dto.response.UserCreatedCategoryResponse;
 import com.chaewookim.accountbookformoms.domain.user.domain.CustomUserDetails;
 import com.chaewookim.accountbookformoms.global.common.ApiResponse;
@@ -32,7 +33,7 @@ public class CategoryController {
 
     @Operation(summary = "사용자 카테고리 조회", description = "기존 카테고리가 아닌 사용자가 생성한 카테고리들 조회")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<UserCreatedCategoryResponse>>> getAllUserCreatedCategories(
+    public ResponseEntity<ApiResponse<List<UserCategoryResponse>>> getAllUserCreatedCategories(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUserId();
